@@ -5,7 +5,6 @@ namespace WinterUniverse
     public class CameraManager : MonoBehaviour
     {
         [SerializeField] private bool _freeMove;
-        [SerializeField] private PawnController _pawn;
         [SerializeField] private Transform _heightRoot;
         [SerializeField] private float _moveSpeed = 10f;
         [SerializeField] private Transform _rotationRoot;
@@ -17,7 +16,6 @@ namespace WinterUniverse
         [SerializeField] private float _zoomSpeed = 4f;
         [SerializeField] private float _minZoom = 10f;
         [SerializeField] private float _maxZoom = 100f;
-        [SerializeField] private LayerMask _groundMask;
 
         private PlayerInputActions _inputActions;
         private Vector3 _currentWorldPosition;
@@ -30,13 +28,9 @@ namespace WinterUniverse
         private Ray _cameraRay;
         private RaycastHit _checkHeightHit;
 
-        private void Awake()
+        public void InitializeComponent()
         {
             _inputActions = new();
-        }
-
-        private void OnEnable()
-        {
             _inputActions.Enable();
             _inputActions.Camera.Cursor.performed += ctx => _cursorInput = ctx.ReadValue<Vector2>();
             _inputActions.Camera.Zoom.performed += ctx => OnZoomInputPerfomed(ctx.ReadValue<Vector2>());
@@ -47,7 +41,7 @@ namespace WinterUniverse
             _currentZoomPosition = _zoomRoot.localPosition;
         }
 
-        private void OnDisable()
+        public void ResetComponent()
         {
             _inputActions.Camera.Cursor.performed -= ctx => _cursorInput = ctx.ReadValue<Vector2>();
             _inputActions.Camera.Zoom.performed -= ctx => OnZoomInputPerfomed(ctx.ReadValue<Vector2>());
@@ -67,7 +61,7 @@ namespace WinterUniverse
             _cameraRay = Camera.main.ScreenPointToRay(_cursorInput);
             if (Physics.Raycast(_cameraRay, out RaycastHit hit, 1000f))
             {
-                _pawn.Locomotion.SetDestination(hit.point);
+                GameManager.StaticInstance.ControllersManager.Player.Pawn.Locomotion.SetDestination(hit.point);
             }
         }
 
@@ -82,11 +76,6 @@ namespace WinterUniverse
             _lockTargetPressed = false;
         }
 
-        private void Update()
-        {
-            OnTick(Time.deltaTime);
-        }
-
         public void OnTick(float deltaTime)
         {
             if (_freeMove)
@@ -96,11 +85,11 @@ namespace WinterUniverse
                 {
                     _currentWorldPosition += (transform.forward * _moveInput.y + transform.right * _moveInput.x).normalized * _moveSpeed * deltaTime;
                 }
-                if (Physics.Raycast(_heightRoot.position, Vector3.down, out _checkHeightHit, 1000f, _groundMask))
+                if (Physics.Raycast(_heightRoot.position, Vector3.down, out _checkHeightHit, 1000f, GameManager.StaticInstance.LayersManager.ObstacleMask))
                 {
                     _currentWorldPosition.y = _checkHeightHit.point.y;
                 }
-                else if (Physics.Raycast(_heightRoot.position + (Vector3.up * 1000f), Vector3.down, out _checkHeightHit, 1000f, _groundMask))
+                else if (Physics.Raycast(_heightRoot.position + (Vector3.up * 1000f), Vector3.down, out _checkHeightHit, 1000f, GameManager.StaticInstance.LayersManager.ObstacleMask))
                 {
                     _currentWorldPosition.y = _checkHeightHit.point.y;
                 }
@@ -111,7 +100,7 @@ namespace WinterUniverse
             }
             else
             {
-                transform.position = Vector3.Lerp(transform.position, _pawn.transform.position, _moveSpeed * deltaTime);
+                transform.position = Vector3.Lerp(transform.position, GameManager.StaticInstance.ControllersManager.Player.Pawn.transform.position, _moveSpeed * deltaTime);
                 _currentWorldPosition = transform.position;
             }
             if (_lockTargetPressed)
