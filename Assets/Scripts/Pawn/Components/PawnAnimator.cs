@@ -20,5 +20,10 @@ namespace WinterUniverse
             _animator.SetFloat("Turn Velocity", _pawn.Status.TurnVelocity);
             _animator.SetBool("Is Moving", _pawn.Status.IsMoving);
         }
+
+        public void PlayActionAnimation(string name, float fadeTime = 0.1f)
+        {
+            _animator.CrossFade(name, fadeTime);
+        }
     }
 }
