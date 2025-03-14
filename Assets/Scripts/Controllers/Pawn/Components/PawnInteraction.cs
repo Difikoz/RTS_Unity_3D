@@ -7,10 +7,11 @@ namespace WinterUniverse
     public class PawnInteraction : MonoBehaviour
     {
         public Action OnTargetChanged;
+        public Action OnInteractablesChanged;
 
         private PawnController _pawn;
         [SerializeField] private PawnController _target;
-        [SerializeField] private List<Transform> _interactable = new();
+        [SerializeField] private List<InteractableBase> _interactables = new();
         [SerializeField] private Vector3 _directionToTarget;
         [SerializeField] private float _distanceToTarget;
         [SerializeField] private float _angleToTarget;
@@ -65,19 +66,21 @@ namespace WinterUniverse
             OnTargetChanged?.Invoke();
         }
 
-        public void AddInteractable(Transform interactable)
+        public void AddInteractable(InteractableBase interactable)
         {
-            if (!_interactable.Contains(interactable))
+            if (!_interactables.Contains(interactable))
             {
-                _interactable.Add(interactable);
+                _interactables.Add(interactable);
+                OnInteractablesChanged?.Invoke();
             }
         }
 
-        public void RemoveInteractable(Transform interactable)
+        public void RemoveInteractable(InteractableBase interactable)
         {
-            if (_interactable.Contains(interactable))
+            if (_interactables.Contains(interactable))
             {
-                _interactable.Remove(interactable);
+                _interactables.Remove(interactable);
+                OnInteractablesChanged?.Invoke();
             }
         }
 
@@ -87,6 +90,8 @@ namespace WinterUniverse
             {
                 return;
             }
+            // has interactable?
+            // can interact?
             // interact
         }
 
@@ -96,10 +101,19 @@ namespace WinterUniverse
             {
                 return;
             }
-            if (_interactable.Count > 0)
+            if (_interactables.Count > 0)
             {
-                // get closest and interact
+                InteractableBase interactable = GetClosestInteractable();
+                if (interactable.CanInteract(_pawn))
+                {
+                    interactable.Interact(_pawn);
+                }
             }
+        }
+
+        public InteractableBase GetClosestInteractable()
+        {
+            return _interactables[0];
         }
 
         public void FollowTarget(bool sprint = true)

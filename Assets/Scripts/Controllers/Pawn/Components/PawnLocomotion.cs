@@ -4,6 +4,7 @@ using UnityEngine.AI;
 namespace WinterUniverse
 {
     [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
     public class PawnLocomotion : MonoBehaviour
     {
