@@ -4,122 +4,115 @@ namespace WinterUniverse
 {
     public class CameraManager : MonoBehaviour
     {
-        [SerializeField] private bool _freeMove;
-        [SerializeField] private Transform _heightRoot;
-        [SerializeField] private float _moveSpeed = 10f;
+        [SerializeField] private float _followSpeed = 10f;
         [SerializeField] private Transform _rotationRoot;
         [SerializeField] private float _rotateSpeed = 45f;
-        [SerializeField] private float _minAngle = 45f;
+        [SerializeField] private float _minAngle = 30f;
         [SerializeField] private float _maxAngle = 90f;
-        [SerializeField] private Transform _zoomRoot;
-        [SerializeField] private float _zoomStep = 2f;
-        [SerializeField] private float _zoomSpeed = 4f;
-        [SerializeField] private float _minZoom = 10f;
-        [SerializeField] private float _maxZoom = 100f;
+        [SerializeField] private Transform _collisionRoot;
+        [SerializeField] private float _collisionRadius = 0.25f;
+        [SerializeField] private float _collisionAvoidanceSpeed = 10f;
 
         private PlayerInputActions _inputActions;
-        private Vector3 _currentWorldPosition;
-        private Vector3 _currentZoomPosition;
         private Vector2 _cursorInput;
-        private Vector2 _moveInput;
         private Vector2 _lookInput;
-        private bool _lockTargetPressed;
+        private bool _freeLookPressed;
         private float _xRot;
         private Ray _cameraRay;
-        private RaycastHit _checkHeightHit;
+        private Vector3 _collisionCurrentOffset;
+        private float _collisionDefaultOffset;
+        private float _collisionRequiredOffset;
+        private RaycastHit _collisionHit;
 
         public void InitializeComponent()
         {
             _inputActions = new();
             _inputActions.Enable();
             _inputActions.Camera.Cursor.performed += ctx => _cursorInput = ctx.ReadValue<Vector2>();
-            _inputActions.Camera.Zoom.performed += ctx => OnZoomInputPerfomed(ctx.ReadValue<Vector2>());
-            _inputActions.Camera.Interact.performed += ctx => OnInteractInputPerfomed();
-            _inputActions.Camera.LookTarget.performed += ctx => OnLockTargetInputPerfomed();
-            _inputActions.Camera.LookTarget.canceled += ctx => OnLockTargetInputCanceled();
+            _inputActions.Camera.SetDestination.performed += ctx => OnSetDestinationPerfomed();
+            _inputActions.Camera.SetTarget.performed += ctx => OnSetTargetPerfomed();
+            _inputActions.Camera.FreeLook.performed += ctx => OnFreeLookPerfomed();
+            _inputActions.Camera.FreeLook.canceled += ctx => OnFreeLookCanceled();
             _xRot = _rotationRoot.localEulerAngles.x;
-            _currentZoomPosition = _zoomRoot.localPosition;
+            _collisionDefaultOffset = _collisionRoot.localPosition.z;
         }
 
         public void ResetComponent()
         {
             _inputActions.Camera.Cursor.performed -= ctx => _cursorInput = ctx.ReadValue<Vector2>();
-            _inputActions.Camera.Zoom.performed -= ctx => OnZoomInputPerfomed(ctx.ReadValue<Vector2>());
-            _inputActions.Camera.Interact.performed -= ctx => OnInteractInputPerfomed();
-            _inputActions.Camera.LookTarget.performed -= ctx => OnLockTargetInputPerfomed();
-            _inputActions.Camera.LookTarget.canceled -= ctx => OnLockTargetInputCanceled();
+            _inputActions.Camera.SetDestination.performed -= ctx => OnSetDestinationPerfomed();
+            _inputActions.Camera.SetTarget.performed -= ctx => OnSetTargetPerfomed();
+            _inputActions.Camera.FreeLook.performed -= ctx => OnFreeLookPerfomed();
+            _inputActions.Camera.FreeLook.canceled -= ctx => OnFreeLookCanceled();
             _inputActions.Disable();
         }
 
-        private void OnZoomInputPerfomed(Vector2 value)
-        {
-            _currentZoomPosition.z = Mathf.Clamp(_currentZoomPosition.z + (value.y * _zoomStep), -_maxZoom, -_minZoom);
-        }
-
-        private void OnInteractInputPerfomed()
+        private void OnSetDestinationPerfomed()
         {
             _cameraRay = Camera.main.ScreenPointToRay(_cursorInput);
-            if (Physics.Raycast(_cameraRay, out RaycastHit hit, 1000f))
+            if (Physics.Raycast(_cameraRay, out RaycastHit hit, 1000f, GameManager.StaticInstance.LayersManager.ObstacleMask))
             {
-                GameManager.StaticInstance.ControllersManager.Player.Pawn.Locomotion.SetDestination(hit.point);
+                GameManager.StaticInstance.ControllersManager.Player.Pawn.Locomotion.SetDestination(hit.point, GameManager.StaticInstance.ControllersManager.Player.SprintPressed);
             }
         }
 
-        private void OnLockTargetInputPerfomed()
+        private void OnSetTargetPerfomed()
         {
-            _lockTargetPressed = true;
-            // lock target???
+            _cameraRay = Camera.main.ScreenPointToRay(_cursorInput);
+            if (Physics.Raycast(_cameraRay, out RaycastHit hit, 1000f, GameManager.StaticInstance.LayersManager.PawnMask) && hit.transform.TryGetComponent(out PawnController pawn))
+            {
+                GameManager.StaticInstance.ControllersManager.Player.Pawn.Interaction.SetTarget(pawn);
+            }
         }
 
-        private void OnLockTargetInputCanceled()
+        private void OnFreeLookPerfomed()
         {
-            _lockTargetPressed = false;
+            _freeLookPressed = true;
         }
 
-        public void OnTick(float deltaTime)
+        private void OnFreeLookCanceled()
         {
-            if (_freeMove)
+            _freeLookPressed = false;
+        }
+
+        public void OnUpdate(float deltaTime)
+        {
+            transform.position = Vector3.Lerp(transform.position, GameManager.StaticInstance.ControllersManager.Player.Pawn.transform.position, _followSpeed * deltaTime);
+            if (_freeLookPressed)
             {
-                _moveInput = _inputActions.Camera.Move.ReadValue<Vector2>();
-                if (_moveInput != Vector2.zero)
-                {
-                    _currentWorldPosition += (transform.forward * _moveInput.y + transform.right * _moveInput.x).normalized * _moveSpeed * deltaTime;
-                }
-                if (Physics.Raycast(_heightRoot.position, Vector3.down, out _checkHeightHit, 1000f, GameManager.StaticInstance.LayersManager.ObstacleMask))
-                {
-                    _currentWorldPosition.y = _checkHeightHit.point.y;
-                }
-                else if (Physics.Raycast(_heightRoot.position + (Vector3.up * 1000f), Vector3.down, out _checkHeightHit, 1000f, GameManager.StaticInstance.LayersManager.ObstacleMask))
-                {
-                    _currentWorldPosition.y = _checkHeightHit.point.y;
-                }
-                if (transform.position != _currentWorldPosition)
-                {
-                    transform.position = Vector3.MoveTowards(transform.position, _currentWorldPosition, _moveSpeed * deltaTime);
-                }
+                HandleFreeLook(deltaTime);
             }
-            else
+            HandleCollision(deltaTime);
+        }
+
+        private void HandleFreeLook(float deltaTime)
+        {
+            _lookInput = _inputActions.Camera.LookAround.ReadValue<Vector2>();
+            if (_lookInput.x != 0f)
             {
-                transform.position = Vector3.Lerp(transform.position, GameManager.StaticInstance.ControllersManager.Player.Pawn.transform.position, _moveSpeed * deltaTime);
-                _currentWorldPosition = transform.position;
+                transform.Rotate(Vector3.up * _lookInput.x * _rotateSpeed * deltaTime);
             }
-            if (_lockTargetPressed)
+            if (_lookInput.y != 0f)
             {
-                _lookInput = _inputActions.Camera.Look.ReadValue<Vector2>();
-                if (_lookInput.x != 0f)
-                {
-                    transform.Rotate(Vector3.up * _lookInput.x * _rotateSpeed * deltaTime);
-                }
-                if (_lookInput.y != 0f)
-                {
-                    _xRot = Mathf.Clamp(_xRot - (_lookInput.y * _rotateSpeed * deltaTime), _minAngle, _maxAngle);
-                    _rotationRoot.localRotation = Quaternion.Euler(_xRot, 0f, 0f);
-                }
+                _xRot = Mathf.Clamp(_xRot - (_lookInput.y * _rotateSpeed * deltaTime), _minAngle, _maxAngle);
+                _rotationRoot.localRotation = Quaternion.Euler(_xRot, 0f, 0f);
             }
-            if (_zoomRoot.localPosition != _currentZoomPosition)
+        }
+
+        private void HandleCollision(float deltaTime)
+        {
+            _collisionRequiredOffset = _collisionDefaultOffset;
+            Vector3 direction = (_collisionRoot.position - _rotationRoot.position).normalized;
+            if (Physics.SphereCast(_rotationRoot.position, _collisionRadius, direction, out _collisionHit, Mathf.Abs(_collisionRequiredOffset), GameManager.StaticInstance.LayersManager.ObstacleMask))
             {
-                _zoomRoot.localPosition = Vector3.MoveTowards(_zoomRoot.localPosition, _currentZoomPosition, (_zoomSpeed + Vector3.Distance(_zoomRoot.localPosition, _currentZoomPosition)) * deltaTime);
+                _collisionRequiredOffset = -(Vector3.Distance(_rotationRoot.position, _collisionHit.point) - _collisionRadius);
             }
+            if (Mathf.Abs(_collisionRequiredOffset) < _collisionRadius)
+            {
+                _collisionRequiredOffset = -_collisionRadius;
+            }
+            _collisionCurrentOffset.z = Mathf.Lerp(_collisionRoot.localPosition.z, _collisionRequiredOffset, _collisionAvoidanceSpeed * deltaTime);
+            _collisionRoot.localPosition = _collisionCurrentOffset;
         }
     }
 }

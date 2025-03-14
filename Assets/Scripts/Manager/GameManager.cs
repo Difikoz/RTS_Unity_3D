@@ -25,6 +25,11 @@ namespace WinterUniverse
             InitializeComponents();
         }
 
+        private void Update()
+        {
+            UpdateComponents(Time.deltaTime);
+        }
+
         private void GetComponents()
         {
             _cameraManager = GetComponentInChildren<CameraManager>();
@@ -39,10 +44,10 @@ namespace WinterUniverse
             _controllersManager.InitializeComponent();
         }
 
-        private void Update()
+        private void UpdateComponents(float deltaTime)
         {
-            _cameraManager.OnTick(Time.deltaTime);
-            _controllersManager.OnTick(Time.deltaTime);
+            _cameraManager.OnUpdate(deltaTime);
+            _controllersManager.OnUpdate(deltaTime);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace WinterUniverse
 
         public void InitializeComponent()
         {
-            _player = GetComponentInChildren<PlayerController>();
+            _player = GameManager.StaticInstance.PrefabsManager.GetPlayer(transform);
             _player.InitializeComponent();
         }
 
@@ -24,7 +24,7 @@ namespace WinterUniverse
             }
         }
 
-        public void OnTick(float deltaTime)
+        public void OnUpdate(float deltaTime)
         {
             _player.OnTick(Time.deltaTime);
             foreach (NPCController controller in _controllers)

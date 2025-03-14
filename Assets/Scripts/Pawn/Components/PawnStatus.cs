@@ -9,8 +9,10 @@ namespace WinterUniverse
         public float ForwardVelocity;
         public float RightVelocity;
         public float TurnVelocity;
+        public bool IsPerfomingAction;
         public bool IsMoving;
-        public bool IsRunning;
+        public bool IsSprinting;
+        public bool IsDead;
 
         public void Initialize()
         {

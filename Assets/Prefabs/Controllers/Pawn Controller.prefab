@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 944538208767869568}
   - component: {fileID: 2970227133689613274}
   m_Layer: 0
-  m_Name: HumanM_BodyMesh
+  m_Name: Base Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,12 +57,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 33340665738476710}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1078596689881375917}
+  m_Father: {fileID: 8432515976701503140}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2970227133689613274
 SkinnedMeshRenderer:
@@ -329,6 +329,38 @@ Transform:
   m_Children:
   - {fileID: 8149527665292900345}
   m_Father: {fileID: 1658997272308760337}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1244334919911316443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8432515976701503140}
+  m_Layer: 3
+  m_Name: ARMOR SLOT
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8432515976701503140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244334919911316443}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 944538208767869568}
+  m_Father: {fileID: 1078596689881375917}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1355450032701826517
 GameObject:
@@ -820,12 +852,14 @@ GameObject:
   - component: {fileID: 1078596689881375917}
   - component: {fileID: 2602040700044621156}
   - component: {fileID: 3462692574571745772}
+  - component: {fileID: 4006976077749304639}
   - component: {fileID: 3427441036201023605}
   - component: {fileID: 6101801380650609486}
   - component: {fileID: 5596808625124682362}
   - component: {fileID: 2580827244843802395}
+  - component: {fileID: 4367385025701746659}
   m_Layer: 3
-  m_Name: Dummy
+  m_Name: Pawn Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -844,8 +878,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 944538208767869568}
   - {fileID: 5805187962564951906}
+  - {fileID: 8432515976701503140}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2602040700044621156
@@ -870,6 +904,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1edf8d41800f1c240add6cf13433b049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4006976077749304639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4238544323499221710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 081772c8411c4e843a7774dcade10017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3427441036201023605
@@ -903,6 +949,7 @@ MonoBehaviour:
   ForwardVelocity: 0
   RightVelocity: 0
   TurnVelocity: 0
+  IsPerfomingAction: 0
   IsMoving: 0
   IsRunning: 0
 --- !u!95 &5596808625124682362
@@ -949,6 +996,29 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &4367385025701746659
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4238544323499221710}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &4248907058905528553
 GameObject:
   m_ObjectHideFlags: 0

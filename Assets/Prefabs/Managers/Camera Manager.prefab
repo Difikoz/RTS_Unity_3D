@@ -137,22 +137,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2d1e5a92eb6c3543aad7308cf7ca609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _freeMove: 0
-  _pawn: {fileID: 0}
-  _heightRoot: {fileID: 2057768954979589301}
-  _moveSpeed: 10
+  _followSpeed: 10
   _rotationRoot: {fileID: 1722271901041167446}
   _rotateSpeed: 45
-  _minAngle: 45
+  _minAngle: 30
   _maxAngle: 90
-  _zoomRoot: {fileID: 8129032357766556972}
-  _zoomStep: 5
-  _zoomSpeed: 10
-  _minZoom: 5
-  _maxZoom: 20
-  _groundMask:
-    serializedVersion: 2
-    m_Bits: 1
+  _collisionRoot: {fileID: 8129032357766556972}
+  _collisionRadius: 0.25
+  _collisionAvoidanceSpeed: 10
 --- !u!1 &6276201231766415885
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8129032357766556972}
   m_Layer: 0
-  m_Name: Zoom Root
+  m_Name: Collision Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

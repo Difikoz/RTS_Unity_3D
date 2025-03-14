@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace WinterUniverse
 {
+    [RequireComponent(typeof(Animator))]
     public class PawnAnimator : MonoBehaviour
     {
         private PawnController _pawn;
@@ -21,8 +22,9 @@ namespace WinterUniverse
             _animator.SetBool("Is Moving", _pawn.Status.IsMoving);
         }
 
-        public void PlayActionAnimation(string name, float fadeTime = 0.1f)
+        public void PlayActionAnimation(string name, float fadeTime = 0.1f, bool isPerfomingAction = true)
         {
+            _pawn.Status.IsPerfomingAction = isPerfomingAction;
             _animator.CrossFade(name, fadeTime);
         }
     }

@@ -5,17 +5,18 @@ namespace WinterUniverse
 {
     public class PrefabsManager : MonoBehaviour
     {
-        [SerializeField] private GameObject _pawnPrefab;
+        [SerializeField] private GameObject _playerControllerPrefab;
         [SerializeField] private GameObject _npcControllerPrefab;
+        [SerializeField] private GameObject _pawnControllerPrefab;
 
-        public PawnController GetPawn(Transform point)
+        public PlayerController GetPlayer(Transform point)
         {
-            return GetPawn(point.position, point.rotation);
+            return GetPlayer(point.position, point.rotation);
         }
 
-        public PawnController GetPawn(Vector3 position, Quaternion rotation)
+        public PlayerController GetPlayer(Vector3 position, Quaternion rotation)
         {
-            return LeanPool.Spawn(_pawnPrefab, position, rotation).GetComponent<PawnController>();
+            return LeanPool.Spawn(_playerControllerPrefab, position, rotation).GetComponent<PlayerController>();
         }
 
         public NPCController GetNPC(Transform point)
@@ -25,7 +26,17 @@ namespace WinterUniverse
 
         public NPCController GetNPC(Vector3 position, Quaternion rotation)
         {
-            return LeanPool.Spawn(_pawnPrefab, position, rotation).GetComponent<NPCController>();
+            return LeanPool.Spawn(_pawnControllerPrefab, position, rotation).GetComponent<NPCController>();
+        }
+
+        public PawnController GetPawn(Transform point)
+        {
+            return GetPawn(point.position, point.rotation);
+        }
+
+        public PawnController GetPawn(Vector3 position, Quaternion rotation)
+        {
+            return LeanPool.Spawn(_pawnControllerPrefab, position, rotation).GetComponent<PawnController>();
         }
 
         public void DespawnObject(GameObject go, float delay = 0f)
