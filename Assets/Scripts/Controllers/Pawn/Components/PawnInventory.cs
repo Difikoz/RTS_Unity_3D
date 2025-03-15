@@ -149,6 +149,51 @@ namespace WinterUniverse
             return amount;
         }
 
+        public bool GetWeapon(out WeaponItemConfig item)
+        {
+            item = null;
+            int price = 0;
+            foreach (ItemStack stack in _stacks)
+            {
+                if (stack.Item.ItemType == ItemType.Weapon && stack.Item.Price > price)
+                {
+                    item = (WeaponItemConfig)stack.Item;
+                    price = item.Price;
+                }
+            }
+            return item != null;
+        }
+
+        public bool GetArmor(out ArmorItemConfig item)
+        {
+            item = null;
+            int price = 0;
+            foreach (ItemStack stack in _stacks)
+            {
+                if (stack.Item.ItemType == ItemType.Armor && stack.Item.Price > price)
+                {
+                    item = (ArmorItemConfig)stack.Item;
+                    price = item.Price;
+                }
+            }
+            return item != null;
+        }
+
+        public bool GetConsumable(out ConsumableItemConfig item)
+        {
+            item = null;
+            int price = 0;
+            foreach (ItemStack stack in _stacks)
+            {
+                if (stack.Item.ItemType == ItemType.Consumable && stack.Item.Price > price)
+                {
+                    item = (ConsumableItemConfig)stack.Item;
+                    price = item.Price;
+                }
+            }
+            return item != null;
+        }
+
         private void UpdateInventory()
         {
             OnInventoryChanged?.Invoke();
