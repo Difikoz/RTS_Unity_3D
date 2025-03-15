@@ -44,7 +44,7 @@ namespace WinterUniverse
                 {
                     transform.rotation = Quaternion.Slerp(_pawn.transform.rotation, Quaternion.LookRotation(_moveDirection), _turnSpeed * deltaTime);
                 }
-                if (_pawn.Status.IsSprinting)
+                if (_pawn.Status.StateHolder.CompareStateValue("Is Sprinting", true))
                 {
                     _moveDirection *= 2f;
                 }
@@ -66,23 +66,23 @@ namespace WinterUniverse
                 }
                 _moveVelocity = Vector3.MoveTowards(_moveVelocity, Vector3.zero, _deceleration * deltaTime);
             }
-            _pawn.Status.ForwardVelocity = Vector3.Dot(_moveVelocity, transform.forward);
-            _pawn.Status.RightVelocity = Vector3.Dot(_moveVelocity, transform.right);
-            _pawn.Status.TurnVelocity = Vector3.SignedAngle(transform.forward, _moveDirection, transform.up) / _turnAngle;
-            _pawn.Status.IsMoving = _moveVelocity.magnitude > 0f;
+            _pawn.Input.ForwardVelocity = Vector3.Dot(_moveVelocity, transform.forward);
+            _pawn.Input.RightVelocity = Vector3.Dot(_moveVelocity, transform.right);
+            _pawn.Input.TurnVelocity = Vector3.SignedAngle(transform.forward, _moveDirection, transform.up) / _turnAngle;
+            _pawn.Status.StateHolder.SetStateValue("Is Moving", _moveVelocity.magnitude > 0f);
         }
 
         public void SetDestination(Vector3 position, bool sprint = true)
         {
             ResetFollowTarget();
-            if (_pawn.Status.IsPerfomingAction)
+            if (_pawn.Status.StateHolder.CompareStateValue("Is Perfoming Action", true))
             {
                 return;
             }
             if (NavMesh.SamplePosition(position, out NavMeshHit hit, 25f, NavMesh.AllAreas))
             {
                 _agent.destination = hit.position;
-                _pawn.Status.IsSprinting = sprint;
+                _pawn.Status.StateHolder.SetStateValue("Is Sprinting", sprint);
             }
         }
 
@@ -96,7 +96,7 @@ namespace WinterUniverse
             if (target != null)
             {
                 _followTarget = target;
-                _pawn.Status.IsSprinting = sprint;
+                _pawn.Status.StateHolder.SetStateValue("Is Sprinting", sprint);
                 if (stopDistance > 0f)
                 {
                     _stopDistance = stopDistance;

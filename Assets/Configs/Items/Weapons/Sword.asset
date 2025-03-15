@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1f15f8097de0234985780ba989d14f3, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: 
+  _id: SWORD
+  _displayName: Sword
+  _description: Description
+  _color: {r: 1, g: 1, b: 1, a: 1}
+  _icon: {fileID: 0}
+  _itemType: 0
+  _model: {fileID: 8318688245176431197, guid: fa9197962fb68fc4083acb846768b142, type: 3}
+  _playAnimationOnUse: 0
+  _animationOnUse: 
+  _stackSize: 1
+  _weight: 2
+  _price: 100
+  _range: 2
+  _knockback: 2
+  _damageTypes:
+  - _damage: 8
+    _type: {fileID: 11400000, guid: dcc2cff6a691efe4d857de9c2f2d1aad, type: 2}
+  - _damage: 2
+    _type: {fileID: 11400000, guid: 4f3d24842f1da7e4f883009cf562e64d, type: 2}
+  _modifiers:
+  - _config: {fileID: 11400000, guid: 812f21a6e6dcb1341a36e66f943c8708, type: 2}
+    _modifier:
+      _type: 1
+      _value: -10
+  _effects:
+  - _chance: 0.1
+    _config: {fileID: 11400000, guid: b0cee311b13734c4ab7c44da580d825e, type: 2}
+    _value: 1
+    _duration: 10

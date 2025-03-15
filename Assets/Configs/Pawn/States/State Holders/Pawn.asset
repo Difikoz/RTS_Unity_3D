@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ed78ab71c7ef58498ec3e13ef7345f6, type: 3}
+  m_Name: Pawn
+  m_EditorClassIdentifier: 
+  _states:
+  - {fileID: 11400000, guid: db863fd9702c053438041a5c72fccab6, type: 2}
+  - {fileID: 11400000, guid: 48b63bd9fe5f06e488b615f7ab40654f, type: 2}
+  - {fileID: 11400000, guid: 572b69dc901210c47ae5b7cc40500624, type: 2}
+  - {fileID: 11400000, guid: 756db6f11b457d7449c182c436bc6910, type: 2}
+  - {fileID: 11400000, guid: a2ba1788ae769344c8f8f00ce32d1126, type: 2}
+  - {fileID: 11400000, guid: 56bc6c313873a2447891c08e6248ccce, type: 2}
+  - {fileID: 11400000, guid: 5bd1617d63ad1924bb4017e527fb8cb7, type: 2}
+  - {fileID: 11400000, guid: cb9d083bd081f6845a8b54d79b143bc8, type: 2}
+  - {fileID: 11400000, guid: 3ca1739bb9f3154458b2f99d274c63dc, type: 2}
+  - {fileID: 11400000, guid: f7802562e2e37ac4ba047aa9074626af, type: 2}
+  - {fileID: 11400000, guid: 1cc1471d75c24ff4db9c8fe7a22be7cc, type: 2}
+  - {fileID: 11400000, guid: c55819fe44514db40ba7f993bcb26e02, type: 2}

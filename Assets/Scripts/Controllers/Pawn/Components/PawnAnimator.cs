@@ -16,15 +16,15 @@ namespace WinterUniverse
 
         public void OnTick(float deltaTime)
         {
-            _animator.SetFloat("Forward Velocity", _pawn.Status.ForwardVelocity);
-            _animator.SetFloat("Right Velocity", _pawn.Status.RightVelocity);
-            _animator.SetFloat("Turn Velocity", _pawn.Status.TurnVelocity);
-            _animator.SetBool("Is Moving", _pawn.Status.IsMoving);
+            _animator.SetFloat("Forward Velocity", _pawn.Input.ForwardVelocity);
+            _animator.SetFloat("Right Velocity", _pawn.Input.RightVelocity);
+            _animator.SetFloat("Turn Velocity", _pawn.Input.TurnVelocity);
+            _animator.SetBool("Is Moving", _pawn.Status.StateHolder.CompareStateValue("Is Moving", true));
         }
 
         public void PlayActionAnimation(string name, float fadeTime = 0.1f, bool isPerfomingAction = true)
         {
-            _pawn.Status.IsPerfomingAction = isPerfomingAction;
+            _pawn.Status.StateHolder.SetStateValue("Is Perfoming Action", isPerfomingAction);
             _animator.CrossFade(name, fadeTime);
         }
     }

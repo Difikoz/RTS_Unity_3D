@@ -30,7 +30,7 @@ namespace WinterUniverse
         {
             if (_target != null)
             {
-                if (_target.Status.IsDead)
+                if (_target.Status.StateHolder.CompareStateValue("Is Dead", true))
                 {
                     ResetTarget();
                 }
@@ -45,7 +45,7 @@ namespace WinterUniverse
 
         public void SetTarget(PawnController target)
         {
-            if (target != null && !_pawn.Status.IsPerfomingAction)
+            if (target != null)
             {
                 _target = target;
                 OnTargetChanged?.Invoke();
@@ -86,7 +86,7 @@ namespace WinterUniverse
 
         public void InteractWithTarget()
         {
-            if (_target == null || _target == _pawn || _pawn.Status.IsPerfomingAction)
+            if (_target == null || _target == _pawn || _pawn.Status.StateHolder.CompareStateValue("Is Perfoming Action", true))
             {
                 return;
             }
@@ -97,7 +97,7 @@ namespace WinterUniverse
 
         public void InteractWithInteractable()
         {
-            if (_pawn.Status.IsPerfomingAction)
+            if (_pawn.Status.StateHolder.CompareStateValue("Is Perfoming Action", true))
             {
                 return;
             }
@@ -118,7 +118,7 @@ namespace WinterUniverse
 
         public void FollowTarget(bool sprint = true)
         {
-            if (_target == null || _target == _pawn || _pawn.Status.IsPerfomingAction)
+            if (_target == null || _target == _pawn || _pawn.Status.StateHolder.CompareStateValue("Is Perfoming Action", true))
             {
                 return;
             }
@@ -127,7 +127,7 @@ namespace WinterUniverse
 
         public void AttackTarget(bool sprint = true)
         {
-            if (_target == null || _target == _pawn || _pawn.Status.IsPerfomingAction)
+            if (_target == null || _target == _pawn || _pawn.Status.StateHolder.CompareStateValue("Is Perfoming Action", true))
             {
                 return;
             }

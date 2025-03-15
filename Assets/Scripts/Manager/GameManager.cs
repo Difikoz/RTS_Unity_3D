@@ -4,11 +4,13 @@ namespace WinterUniverse
 {
     public class GameManager : Singleton<GameManager>
     {
+        private AudioManager _audioManager;
         private CameraManager _cameraManager;
         private ControllersManager _controllersManager;
         private LayersManager _layersManager;
         private PrefabsManager _prefabsManager;
 
+        public AudioManager AudioManager => _audioManager;
         public CameraManager CameraManager => _cameraManager;
         public ControllersManager ControllersManager => _controllersManager;
         public LayersManager LayersManager => _layersManager;
@@ -32,6 +34,7 @@ namespace WinterUniverse
 
         private void GetComponents()
         {
+            _audioManager = GetComponentInChildren<AudioManager>();
             _cameraManager = GetComponentInChildren<CameraManager>();
             _controllersManager = GetComponentInChildren<ControllersManager>();
             _layersManager = GetComponentInChildren<LayersManager>();
@@ -40,6 +43,7 @@ namespace WinterUniverse
 
         private void InitializeComponents()
         {
+            _audioManager.InitializeComponent();
             _cameraManager.InitializeComponent();
             _controllersManager.InitializeComponent();
         }
