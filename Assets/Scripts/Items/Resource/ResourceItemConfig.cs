@@ -9,10 +9,5 @@ namespace WinterUniverse
         {
             _itemType = ItemType.Resource;
         }
-
-        public override void Use(PawnController pawn, bool fromInventory = true)
-        {
-
-        }
     }
 }

@@ -3,24 +3,18 @@ using UnityEngine;
 
 namespace WinterUniverse
 {
-    public class PawnEquipment : MonoBehaviour
+    public class PawnEquipment : PawnComponent
     {
         public Action OnEquipmentChanged;
 
-        private PawnController _pawn;
-        private WeaponSlot _weaponSlot;
-        private ArmorSlot _armorSlot;
+        public WeaponSlot WeaponSlot { get; private set; }
+        public ArmorSlot ArmorSlot { get; private set; }
 
-        public WeaponSlot WeaponSlot => _weaponSlot;
-        public ArmorSlot ArmorSlot => _armorSlot;
-
-        public void Initialize()
+        public override void InitializeComponent()
         {
-            _pawn = GetComponent<PawnController>();
-            _weaponSlot = GetComponentInChildren<WeaponSlot>();
-            _armorSlot = GetComponentInChildren<ArmorSlot>();
-            _weaponSlot.Initialize();
-            _armorSlot.Initialize();
+            base.InitializeComponent();
+            WeaponSlot = GetComponentInChildren<WeaponSlot>();
+            ArmorSlot = GetComponentInChildren<ArmorSlot>();
         }
 
         public void EquipWeapon(WeaponItemConfig config, bool removeNewFromInventory = true, bool addOldToInventory = true)
@@ -33,26 +27,23 @@ namespace WinterUniverse
             {
                 _pawn.Inventory.RemoveItem(config);
             }
-            if (addOldToInventory && _weaponSlot.Config != null)
-            {
-                _pawn.Inventory.AddItem(_weaponSlot.Config);
-            }
-            _weaponSlot.ChangeConfig(config);
+            UnequipWeapon(addOldToInventory);
+            WeaponSlot.ChangeConfig(config);
             _pawn.Status.StateHolder.SetStateValue("Equipped Weapon", true);
-            //if (config.PlayAnimationOnUse)
-            //{
-            //    _pawn.Animator.PlayAction(config.AnimationOnUse);
-            //}
             OnEquipmentChanged?.Invoke();
         }
 
         public void UnequipWeapon(bool addOldToInventory = true)
         {
-            if (addOldToInventory && _weaponSlot.Config != null)
+            if (WeaponSlot.Config == null)
             {
-                _pawn.Inventory.AddItem(_weaponSlot.Config);
+                return;
             }
-            _weaponSlot.ChangeConfig(null);
+            if (addOldToInventory)
+            {
+                _pawn.Inventory.AddItem(WeaponSlot.Config);
+            }
+            WeaponSlot.ChangeConfig(null);
             _pawn.Status.StateHolder.SetStateValue("Equipped Weapon", false);
             OnEquipmentChanged?.Invoke();
         }
@@ -67,26 +58,23 @@ namespace WinterUniverse
             {
                 _pawn.Inventory.RemoveItem(config);
             }
-            if (addOldToInventory && _armorSlot.Config != null)
-            {
-                _pawn.Inventory.AddItem(_armorSlot.Config);
-            }
-            _armorSlot.ChangeConfig(config);
+            UnequipArmor(addOldToInventory);
+            ArmorSlot.ChangeConfig(config);
             _pawn.Status.StateHolder.SetStateValue("Equipped Armor", true);
-            //if (config.PlayAnimationOnUse)
-            //{
-            //    _pawn.Animator.PlayAction(config.AnimationOnUse);
-            //}
             OnEquipmentChanged?.Invoke();
         }
 
         public void UnequipArmor(bool addOldToInventory = true)
         {
-            if (addOldToInventory && _armorSlot.Config != null)
+            if (ArmorSlot.Config == null)
             {
-                _pawn.Inventory.AddItem(_armorSlot.Config);
+                return;
             }
-            _armorSlot.ChangeConfig(null);
+            if (addOldToInventory)
+            {
+                _pawn.Inventory.AddItem(ArmorSlot.Config);
+            }
+            ArmorSlot.ChangeConfig(null);
             _pawn.Status.StateHolder.SetStateValue("Equipped Armor", false);
             OnEquipmentChanged?.Invoke();
         }

@@ -13,10 +13,36 @@ MonoBehaviour:
   m_Name: 01 Slicing
   m_EditorClassIdentifier: 
   _id: SLICING
-  _displayName: Slicing
-  _description: Description
-  _color: {r: 1, g: 1, b: 1, a: 1}
-  _icon: {fileID: 0}
+  _displayName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _color: {fileID: 11400000, guid: 76565e300a0f07a498f9419d67c1486b, type: 2}
+  _icon:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   _resistanceStat: {fileID: 11400000, guid: aa698b11f6a15c64cb384443768cd784, type: 2}
   _hitVFX: []
   _hitClips: []
+  references:
+    version: 2
+    RefIds: []

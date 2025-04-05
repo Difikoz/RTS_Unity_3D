@@ -13,10 +13,36 @@ MonoBehaviour:
   m_Name: 03 Blunt
   m_EditorClassIdentifier: 
   _id: BLUNT
-  _displayName: Blunt
-  _description: Description
-  _color: {r: 1, g: 1, b: 1, a: 1}
-  _icon: {fileID: 0}
+  _displayName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _color: {fileID: 11400000, guid: 76565e300a0f07a498f9419d67c1486b, type: 2}
+  _icon:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   _resistanceStat: {fileID: 11400000, guid: 085612559b8067f41899ee395146f850, type: 2}
   _hitVFX: []
   _hitClips: []
+  references:
+    version: 2
+    RefIds: []

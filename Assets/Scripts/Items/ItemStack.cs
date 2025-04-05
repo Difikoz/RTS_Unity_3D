@@ -17,11 +17,6 @@ namespace WinterUniverse
             _amount = amount;
         }
 
-        public bool HasFreeSpace()
-        {
-            return _amount < _item.StackSize;
-        }
-
         public void AddToStack(int amount = 1)
         {
             _amount += amount;

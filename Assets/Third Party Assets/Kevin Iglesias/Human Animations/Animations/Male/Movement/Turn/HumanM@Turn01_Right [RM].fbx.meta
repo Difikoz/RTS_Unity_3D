@@ -942,7 +942,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: Rig/B-root
+    rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
@@ -966,4 +966,4 @@ AssetOrigin:
   packageVersion: 2.3.3
   assetPath: Assets/Third Party Assets/Kevin Iglesias/Human Animations/Animations/Male/Movement/Turn/HumanM@Turn01_Right
     [RM].fbx
-  uploadId: 733977
+  uploadId: 741828

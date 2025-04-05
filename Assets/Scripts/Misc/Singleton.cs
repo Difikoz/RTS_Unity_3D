@@ -4,8 +4,7 @@ namespace WinterUniverse
 {
     public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
-        private static T _staticInstance;
-        public static T StaticInstance => _staticInstance;
+        public static T StaticInstance { get; private set; }
 
         [SerializeField] private bool _dontDestroyOnLoad = true;
 
@@ -13,14 +12,14 @@ namespace WinterUniverse
         {
             if (StaticInstance == null)
             {
-                _staticInstance = (T)this;
+                StaticInstance = (T)this;
             }
             else if (StaticInstance != (T)this)
             {
                 Destroy(gameObject);
                 return;
             }
-            if (_dontDestroyOnLoad && !transform.parent)
+            if (_dontDestroyOnLoad && transform.parent == null)
             {
                 DontDestroyOnLoad(gameObject);
             }

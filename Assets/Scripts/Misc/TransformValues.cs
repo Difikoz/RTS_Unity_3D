@@ -5,13 +5,13 @@ namespace WinterUniverse
     [System.Serializable]
     public class TransformValues
     {
-        public float PosX;
-        public float PosY;
-        public float PosZ;
+        public float PosX { get; private set; }
+        public float PosY { get; private set; }
+        public float PosZ { get; private set; }
 
-        public float RotX;
-        public float RotY;
-        public float RotZ;
+        public float RotX { get; private set; }
+        public float RotY { get; private set; }
+        public float RotZ { get; private set; }
 
         public void SetPosition(Vector3 position)
         {

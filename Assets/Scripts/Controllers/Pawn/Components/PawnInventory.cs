@@ -4,19 +4,16 @@ using UnityEngine;
 
 namespace WinterUniverse
 {
-    public class PawnInventory : MonoBehaviour
+    public class PawnInventory : PawnComponent
     {
         public Action OnInventoryChanged;
 
-        private PawnController _pawn;
-        private List<ItemStack> _stacks;
+        public Dictionary<string, ItemStack> Stacks { get; private set; }
 
-        public List<ItemStack> Stacks => _stacks;
-
-        public void Initialize()
+        public override void InitializeComponent()
         {
-            _pawn = GetComponent<PawnController>();
-            _stacks = new();
+            base.InitializeComponent();
+            Stacks = new();
         }
 
         public void AddItem(ItemStack stack)
@@ -26,41 +23,13 @@ namespace WinterUniverse
 
         public void AddItem(ItemConfig item, int amount = 1)
         {
-            if (item.StackSize > 1)
+            if (Stacks.ContainsKey(item.ID))
             {
-                foreach (ItemStack stack in _stacks)
-                {
-                    if (stack.Item.DisplayName == item.DisplayName)
-                    {
-                        while (stack.HasFreeSpace() && amount > 0)
-                        {
-                            stack.AddToStack();
-                            amount--;
-                        }
-                        if (amount <= 0)
-                        {
-                            break;
-                        }
-                    }
-                }
-                while (amount > 0)
-                {
-                    ItemStack stack = new(item, 0);
-                    while (stack.HasFreeSpace() && amount > 0)
-                    {
-                        stack.AddToStack();
-                        amount--;
-                    }
-                    _stacks.Add(stack);
-                }
+                Stacks[item.ID].AddToStack(amount);
             }
             else
             {
-                while (amount > 0)
-                {
-                    _stacks.Add(new(item));
-                    amount--;
-                }
+                Stacks.Add(item.ID, new(item, amount));
             }
             UpdateInventory();
         }
@@ -76,24 +45,13 @@ namespace WinterUniverse
             {
                 return false;
             }
-            for (int i = _stacks.Count - 1; i >= 0; i--)
+            if (Stacks[item.ID].Amount > amount)
             {
-                if (_stacks[i].Item.DisplayName == item.DisplayName)
-                {
-                    while (_stacks[i].Amount > 0 && amount > 0)
-                    {
-                        _stacks[i].RemoveFromStack();
-                        amount--;
-                    }
-                    if (_stacks[i].Amount <= 0)
-                    {
-                        _stacks.RemoveAt(i);
-                    }
-                    if (amount <= 0)
-                    {
-                        break;
-                    }
-                }
+                Stacks[item.ID].RemoveFromStack(amount);
+            }
+            else
+            {
+                Stacks.Remove(item.ID);
             }
             UpdateInventory();
             return true;
@@ -106,58 +64,33 @@ namespace WinterUniverse
 
         public bool DropItem(ItemConfig item, int amount = 1)
         {
-            if (AmountOfItem(item) < amount)
+            if (RemoveItem(item, amount))
             {
-                return false;
+                //spawn
+                UpdateInventory();
+                return true;
             }
-            for (int i = _stacks.Count - 1; i >= 0; i--)
-            {
-                if (_stacks[i].Item.DisplayName == item.DisplayName)
-                {
-                    if (_stacks[i].Amount < amount)
-                    {
-                        amount -= _stacks[i].Amount;
-                        //GameManager.StaticInstance.PrefabsManager.GetItem(transform.position, Quaternion.identity).Initialize(item, _stacks[i].Amount);
-                        _stacks.RemoveAt(i);
-                    }
-                    else
-                    {
-                        //GameManager.StaticInstance.PrefabsManager.GetItem(transform.position, Quaternion.identity).Initialize(item, amount);
-                        _stacks[i].RemoveFromStack(amount);
-                        if (_stacks[i].Amount == 0)
-                        {
-                            _stacks.RemoveAt(i);
-                        }
-                        break;
-                    }
-                }
-            }
-            UpdateInventory();
-            return true;
+            return false;
         }
 
         public int AmountOfItem(ItemConfig item)
         {
-            int amount = 0;
-            foreach (ItemStack stack in _stacks)
+            if (Stacks.ContainsKey(item.ID))
             {
-                if (stack.Item.DisplayName == item.DisplayName)
-                {
-                    amount += stack.Amount;
-                }
+                return Stacks[item.ID].Amount;
             }
-            return amount;
+            return 0;
         }
 
         public bool GetWeapon(out WeaponItemConfig item)
         {
             item = null;
             int price = 0;
-            foreach (ItemStack stack in _stacks)
+            foreach (KeyValuePair<string, ItemStack> stack in Stacks)
             {
-                if (stack.Item.ItemType == ItemType.Weapon && stack.Item.Price > price)
+                if (stack.Value.Item.ItemType == ItemType.Weapon && stack.Value.Item.Price > price)
                 {
-                    item = (WeaponItemConfig)stack.Item;
+                    item = (WeaponItemConfig)stack.Value.Item;
                     price = item.Price;
                 }
             }
@@ -168,11 +101,11 @@ namespace WinterUniverse
         {
             item = null;
             int price = 0;
-            foreach (ItemStack stack in _stacks)
+            foreach (KeyValuePair<string, ItemStack> stack in Stacks)
             {
-                if (stack.Item.ItemType == ItemType.Armor && stack.Item.Price > price)
+                if (stack.Value.Item.ItemType == ItemType.Armor && stack.Value.Item.Price > price)
                 {
-                    item = (ArmorItemConfig)stack.Item;
+                    item = (ArmorItemConfig)stack.Value.Item;
                     price = item.Price;
                 }
             }
@@ -183,11 +116,11 @@ namespace WinterUniverse
         {
             item = null;
             int price = 0;
-            foreach (ItemStack stack in _stacks)
+            foreach (KeyValuePair<string, ItemStack> stack in Stacks)
             {
-                if (stack.Item.ItemType == ItemType.Consumable && stack.Item.Price > price)
+                if (stack.Value.Item.ItemType == ItemType.Consumable && stack.Value.Item.Price > price)
                 {
-                    item = (ConsumableItemConfig)stack.Item;
+                    item = (ConsumableItemConfig)stack.Value.Item;
                     price = item.Price;
                 }
             }

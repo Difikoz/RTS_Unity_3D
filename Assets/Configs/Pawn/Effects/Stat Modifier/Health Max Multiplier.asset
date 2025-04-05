@@ -12,11 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c72239c3194d9849aa1d28eb859aa24, type: 3}
   m_Name: Health Max Multiplier
   m_EditorClassIdentifier: 
-  _id: HP MAX MULT
-  _displayName: Health Max Changed
-  _description: Description
-  _color: {r: 1, g: 1, b: 1, a: 1}
-  _icon: {fileID: 0}
-  _effectType: 4
+  _id: Health Max Multiplier
+  _displayName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _color: {fileID: 0}
+  _icon:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   _stat: {fileID: 11400000, guid: 471b00ccdd63b6b479b6029c82643cbd, type: 2}
   _modifierType: 1
+  references:
+    version: 2
+    RefIds: []

@@ -12,13 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ae0f22c9a4b78469d45b7c7b237f37, type: 3}
   m_Name: 01 01 Health Max
   m_EditorClassIdentifier: 
-  _id: HP MAX
-  _displayName: Health Max
-  _description: Description
-  _color: {r: 1, g: 1, b: 1, a: 1}
-  _icon: {fileID: 0}
-  _clampMinValue: 1
+  _id: Health Max
+  _displayName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _color: {fileID: 11400000, guid: 76565e300a0f07a498f9419d67c1486b, type: 2}
+  _icon:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   _minValue: 0
-  _clampMaxValue: 0
-  _maxValue: 0
+  _maxValue: 999999
   _isPercent: 0
+  references:
+    version: 2
+    RefIds: []

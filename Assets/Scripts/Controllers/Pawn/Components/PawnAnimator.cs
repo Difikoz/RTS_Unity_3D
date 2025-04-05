@@ -2,23 +2,22 @@ using UnityEngine;
 
 namespace WinterUniverse
 {
-    [RequireComponent(typeof(Animator))]
-    public class PawnAnimator : MonoBehaviour
+    public class PawnAnimator : PawnComponent
     {
-        private PawnController _pawn;
         private Animator _animator;
 
-        public void Initialize()
+        public override void InitializeComponent()
         {
-            _pawn = GetComponent<PawnController>();
+            base.InitializeComponent();
             _animator = GetComponent<Animator>();
         }
 
-        public void OnTick(float deltaTime)
+        public override void UpdateComponent()
         {
-            _animator.SetFloat("Forward Velocity", _pawn.Input.ForwardVelocity);
-            _animator.SetFloat("Right Velocity", _pawn.Input.RightVelocity);
-            _animator.SetFloat("Turn Velocity", _pawn.Input.TurnVelocity);
+            base.UpdateComponent();
+            _animator.SetFloat("Forward Velocity", _pawn.Locomotion.ForwardVelocity);
+            _animator.SetFloat("Right Velocity", _pawn.Locomotion.RightVelocity);
+            _animator.SetFloat("Turn Velocity", _pawn.Locomotion.TurnVelocity);
             _animator.SetBool("Is Moving", _pawn.Status.StateHolder.CompareStateValue("Is Moving", true));
         }
 

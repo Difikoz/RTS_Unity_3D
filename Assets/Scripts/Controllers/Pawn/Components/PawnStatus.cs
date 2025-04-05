@@ -3,83 +3,81 @@ using UnityEngine;
 
 namespace WinterUniverse
 {
-    public class PawnStatus : MonoBehaviour
+    public class PawnStatus : PawnComponent
     {
         public Action<float, float> OnHealthChanged;
         public Action<float, float> OnStaminaChanged;
         public Action OnDied;
         public Action OnRevived;
 
-        [SerializeField] private StatCreatorConfig _statCreatorConfig;
-        [SerializeField] private StateHolderConfig _stateHolderConfig;
-        [SerializeField] private StateCreatorConfig _stateCreatorConfig;
-        [SerializeField] protected float _regenerationTickCooldown = 0.2f;
-        [SerializeField] protected float _healthRegenerationDelayCooldown = 10f;
-        [SerializeField] protected float _staminaRegenerationDelayCooldown = 5f;
+        [SerializeField] private StateCreatorConfig _testStateCreatorConfig;
+        [SerializeField] private float _regenerationTick = 0.2f;
+        [SerializeField] private float _healthRegenerationDelay = 10f;
+        [SerializeField] private float _staminaRegenerationDelay = 5f;
 
-        private PawnController _pawn;
-        private StatHolder _statHolder;
-        private StateHolder _stateHolder;
+        private float _healthCurrent;
+        private float _staminaCurrent;
+        private float _healthRegenerationCurrentTick;
+        private float _staminaRegenerationCurrentTick;
+        private float _healthRegenerationCurrentDelay;
+        private float _staminaRegenerationCurrentDelay;
 
-        protected float _healthCurrent;
-        protected float _staminaCurrent;
-        protected float _healthRegenerationCurrentTickTime;
-        protected float _healthRegenerationCurrentDelayTime;
-        protected float _staminaRegenerationCurrentTickTime;
-        protected float _staminaRegenerationCurrentDelayTime;
+        public StatsHolder StatsHolder { get; private set; }
+        public StateHolder StateHolder { get; private set; }
+        public EffectsHolder EffectsHolder { get; private set; }
+        public float HealthPercent => _healthCurrent / StatsHolder.GetStat("Health Max").CurrentValue;
+        public float StaminaPercent => _staminaCurrent / StatsHolder.GetStat("Stamina Max").CurrentValue;
 
-        public StatHolder StatHolder => _statHolder;
-        public StateHolder StateHolder => _stateHolder;
-        public float HealthPercent => _healthCurrent / _statHolder.HealthMax.CurrentValue;
-        public float StaminaPercent => _staminaCurrent / _statHolder.StaminaMax.CurrentValue;
-
-        public void Initialize()
+        public override void InitializeComponent()
         {
-            _pawn = GetComponent<PawnController>();
-            _statHolder = new(_statCreatorConfig.Stats);
-            _stateHolder = new(_stateHolderConfig.States);
-            _stateHolder.Initialize(_stateCreatorConfig.States);
+            base.InitializeComponent();
+            StatsHolder = new(GameManager.StaticInstance.ConfigsManager.PawnStats);
+            StateHolder = new(GameManager.StaticInstance.ConfigsManager.PawnStates);
+            EffectsHolder = new(_pawn);
+            StateHolder.ApplyStates(_testStateCreatorConfig.States);// rework to apply on spawn
         }
 
-        public void OnTick(float deltaTime)
+        public override void UpdateComponent()
         {
-            if (_healthRegenerationCurrentDelayTime >= _healthRegenerationDelayCooldown)
+            base.UpdateComponent();
+            if (_healthRegenerationCurrentDelay >= _healthRegenerationDelay)
             {
-                if (_healthRegenerationCurrentTickTime >= _regenerationTickCooldown)
+                if (_healthRegenerationCurrentTick >= _regenerationTick)
                 {
-                    RestoreHealthCurrent(_statHolder.HealthRegeneration.CurrentValue * _regenerationTickCooldown);
-                    _healthRegenerationCurrentTickTime = 0f;
+                    RestoreHealthCurrent(StatsHolder.GetStat("Health Regeneration").CurrentValue * _regenerationTick);
+                    _healthRegenerationCurrentTick = 0f;
                 }
                 else
                 {
-                    _healthRegenerationCurrentTickTime += deltaTime;
+                    _healthRegenerationCurrentTick += Time.deltaTime;
                 }
             }
             else
             {
-                _healthRegenerationCurrentDelayTime += deltaTime;
+                _healthRegenerationCurrentDelay += Time.deltaTime;
             }
-            if (_staminaRegenerationCurrentDelayTime >= _staminaRegenerationDelayCooldown)
+            if (_staminaRegenerationCurrentDelay >= _staminaRegenerationDelay)
             {
-                if (_staminaRegenerationCurrentTickTime >= _regenerationTickCooldown)
+                if (_staminaRegenerationCurrentTick >= _regenerationTick)
                 {
-                    RestoreStaminaCurrent(_statHolder.StaminaRegeneration.CurrentValue * _regenerationTickCooldown);
-                    _staminaRegenerationCurrentTickTime = 0f;
+                    RestoreStaminaCurrent(StatsHolder.GetStat("Stamina Regeneration").CurrentValue * _regenerationTick);
+                    _staminaRegenerationCurrentTick = 0f;
                 }
                 else
                 {
-                    _staminaRegenerationCurrentTickTime += deltaTime;
+                    _staminaRegenerationCurrentTick += Time.deltaTime;
                 }
             }
             else
             {
-                _staminaRegenerationCurrentDelayTime += deltaTime;
+                _staminaRegenerationCurrentDelay += Time.deltaTime;
             }
+            EffectsHolder.HandleEffects();
         }
 
         public void ReduceHealthCurrent(float value, DamageTypeConfig type, PawnController source = null)
         {
-            if (_stateHolder.CompareStateValue("Is Dead", true) || value <= 0f)
+            if (StateHolder.CompareStateValue("Is Dead", true) || value <= 0f)
             {
                 return;
             }
@@ -87,57 +85,58 @@ namespace WinterUniverse
             {
 
             }
-            float resistance = _statHolder.GetStat(type.ResistanceStat.ID).CurrentValue;
+            float resistance = StatsHolder.GetStat(type.ResistanceStat.ID).CurrentValue;
             if (resistance < 100f)
             {
-                _healthRegenerationCurrentDelayTime = 0f;
+                _healthRegenerationCurrentDelay = 0f;
                 value -= value * resistance / 100f;
-                _healthCurrent = Mathf.Clamp(_healthCurrent - value, 0f, _statHolder.HealthMax.CurrentValue);
+                value *= StatsHolder.GetStat("Damage Taken").CurrentValue / 100f;
+                _healthCurrent = Mathf.Clamp(_healthCurrent - value, 0f, StatsHolder.GetStat("Health Max").CurrentValue);
                 if (_healthCurrent <= 0f)
                 {
                     Die(source);
                 }
                 else
                 {
-                    OnHealthChanged?.Invoke(_healthCurrent, _statHolder.HealthMax.CurrentValue);
+                    OnHealthChanged?.Invoke(_healthCurrent, StatsHolder.GetStat("Health Max").CurrentValue);
                 }
             }
         }
 
         public void RestoreHealthCurrent(float value)
         {
-            if (_stateHolder.CompareStateValue("Is Dead", true) || value <= 0f)
+            if (StateHolder.CompareStateValue("Is Dead", true) || value <= 0f)
             {
                 return;
             }
-            _healthCurrent = Mathf.Clamp(_healthCurrent + value, 0f, _statHolder.HealthMax.CurrentValue);
-            OnHealthChanged?.Invoke(_healthCurrent, _statHolder.HealthMax.CurrentValue);
+            _healthCurrent = Mathf.Clamp(_healthCurrent + value, 0f, StatsHolder.GetStat("Health Max").CurrentValue);
+            OnHealthChanged?.Invoke(_healthCurrent, StatsHolder.GetStat("Health Max").CurrentValue);
         }
 
         public void ReduceStaminaCurrent(float value)
         {
-            if (_stateHolder.CompareStateValue("Is Dead", true) || value <= 0f)
+            if (StateHolder.CompareStateValue("Is Dead", true) || value <= 0f)
             {
                 return;
             }
-            _staminaRegenerationCurrentDelayTime = 0f;
-            _staminaCurrent = Mathf.Clamp(_staminaCurrent - value, 0f, _statHolder.StaminaMax.CurrentValue);
-            OnStaminaChanged?.Invoke(_staminaCurrent, _statHolder.StaminaMax.CurrentValue);
+            _staminaRegenerationCurrentDelay = 0f;
+            _staminaCurrent = Mathf.Clamp(_staminaCurrent - value, 0f, StatsHolder.GetStat("Stamina Max").CurrentValue);
+            OnStaminaChanged?.Invoke(_staminaCurrent, StatsHolder.GetStat("Stamina Max").CurrentValue);
         }
 
         public void RestoreStaminaCurrent(float value)
         {
-            if (_stateHolder.CompareStateValue("Is Dead", true) || value <= 0f)
+            if (StateHolder.CompareStateValue("Is Dead", true) || value <= 0f)
             {
                 return;
             }
-            _staminaCurrent = Mathf.Clamp(_staminaCurrent + value, 0f, _statHolder.StaminaMax.CurrentValue);
-            OnStaminaChanged?.Invoke(_staminaCurrent, _statHolder.StaminaMax.CurrentValue);
+            _staminaCurrent = Mathf.Clamp(_staminaCurrent + value, 0f, StatsHolder.GetStat("Stamina Max").CurrentValue);
+            OnStaminaChanged?.Invoke(_staminaCurrent, StatsHolder.GetStat("Stamina Max").CurrentValue);
         }
 
         private void Die(PawnController source = null)
         {
-            if (_stateHolder.CompareStateValue("Is Dead", true))
+            if (StateHolder.CompareStateValue("Is Dead", true))
             {
                 return;
             }
@@ -147,9 +146,9 @@ namespace WinterUniverse
             }
             _healthCurrent = 0f;
             _staminaCurrent = 0f;
-            OnHealthChanged?.Invoke(_healthCurrent, _statHolder.HealthMax.CurrentValue);
-            OnStaminaChanged?.Invoke(_staminaCurrent, _statHolder.StaminaMax.CurrentValue);
-            _stateHolder.SetStateValue("Is Dead", true);
+            OnHealthChanged?.Invoke(_healthCurrent, StatsHolder.GetStat("Health Max").CurrentValue);
+            OnStaminaChanged?.Invoke(_staminaCurrent, StatsHolder.GetStat("Stamina Max").CurrentValue);
+            StateHolder.SetStateValue("Is Dead", true);
             _pawn.Animator.PlayActionAnimation("Death");
             OnDied?.Invoke();
         }
@@ -157,9 +156,9 @@ namespace WinterUniverse
         public void Revive()
         {
             _pawn.Animator.PlayActionAnimation("Revive");
-            _stateHolder.SetStateValue("Is Dead", false);
-            RestoreHealthCurrent(_statHolder.HealthMax.CurrentValue);
-            RestoreStaminaCurrent(_statHolder.StaminaMax.CurrentValue);
+            StateHolder.SetStateValue("Is Dead", false);
+            RestoreHealthCurrent(StatsHolder.GetStat("Health Max").CurrentValue);
+            RestoreStaminaCurrent(StatsHolder.GetStat("Stamina Max").CurrentValue);
             OnRevived?.Invoke();
         }
     }

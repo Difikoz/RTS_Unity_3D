@@ -14,21 +14,5 @@ namespace WinterUniverse
         {
             _itemType = ItemType.Consumable;
         }
-
-        public override void Use(PawnController pawn, bool fromInventory = true)
-        {
-            if (pawn.Status.StateHolder.CompareStateValue("Is Perfoming Action", true))
-            {
-                return;
-            }
-            if (!fromInventory || (fromInventory && pawn.Inventory.RemoveItem(this)))
-            {
-                //if (_playAnimationOnUse)
-                //{
-                //    pawn.Animator.PlayAction(_animationOnUse);
-                //}
-                pawn.Effects.ApplyEffects(_effects, null);
-            }
-        }
     }
 }

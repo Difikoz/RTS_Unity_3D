@@ -12,13 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcafddcd7a2f48b4b9ff30fb45082f56, type: 3}
   m_Name: Wanderer
   m_EditorClassIdentifier: 
-  _id: WANDERER
+  _id: Wanderer
   _states:
   - _config: {fileID: 11400000, guid: db863fd9702c053438041a5c72fccab6, type: 2}
     _value: 1
+  - _config: {fileID: 11400000, guid: 2a67f0fa6181d5441afcc4857ec35e82, type: 2}
+    _value: 1
+  - _config: {fileID: 11400000, guid: 443a8f4b0bd18b44487ec63d5875ca39, type: 2}
+    _value: 0
   - _config: {fileID: 11400000, guid: 48b63bd9fe5f06e488b615f7ab40654f, type: 2}
     _value: 1
   - _config: {fileID: 11400000, guid: 572b69dc901210c47ae5b7cc40500624, type: 2}
     _value: 0
+  - _config: {fileID: 11400000, guid: a8223606e8d0ab84697684e7a91dfdce, type: 2}
+    _value: 1
   - _config: {fileID: 11400000, guid: 756db6f11b457d7449c182c436bc6910, type: 2}
     _value: 1

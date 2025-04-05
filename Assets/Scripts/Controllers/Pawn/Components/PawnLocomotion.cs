@@ -3,130 +3,95 @@ using UnityEngine.AI;
 
 namespace WinterUniverse
 {
-    [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(CapsuleCollider))]
-    public class PawnLocomotion : MonoBehaviour
+    public class PawnLocomotion : PawnComponent
     {
         [SerializeField, Range(0.5f, 4f)] private float _acceleration = 2f;
-        [SerializeField, Range(0.5f, 4f)] private float _deceleration = 2f;
-        [SerializeField, Range(0.5f, 4f)] private float _turnSpeed = 2f;
+        [SerializeField, Range(0.5f, 4f)] private float _deceleration = 4f;
+        [SerializeField, Range(0f, 720f)] private float _turnSpeed = 180f;
         [SerializeField] private float _turnAngle = 45f;
 
-        private PawnController _pawn;
-        private NavMeshAgent _agent;
-        private CapsuleCollider _collider;
-        [SerializeField] private Transform _followTarget;
-        [SerializeField] private Vector3 _moveDirection;
-        [SerializeField] private Vector3 _moveVelocity;
-        private float _stopDistance;
+        public Vector3 MoveDirection { get; private set; }
+        public Vector3 MoveVelocity { get; private set; }
+        public float ForwardVelocity { get; private set; }
+        public float RightVelocity { get; private set; }
+        public float TurnVelocity { get; private set; }
+        public float RemainingDistance { get; private set; }
+        public bool ReachedDestination { get; private set; }
 
-        public bool ReachedDestination => !_agent.hasPath;
-
-        public void Initialize()
+        public override void UpdateComponent()
         {
-            _pawn = GetComponent<PawnController>();
-            _agent = GetComponent<NavMeshAgent>();
-            _collider = GetComponent<CapsuleCollider>();
-            ResetFollowTarget();
-        }
-
-        public void OnTick(float deltaTime)
-        {
-            if (_agent.hasPath)
+            base.UpdateComponent();
+            RemainingDistance = Vector3.Distance(transform.position, _pawn.Agent.destination);
+            if (ReachedDestination)
             {
-                if (_followTarget != null)
+                if (RemainingDistance > _pawn.Agent.stoppingDistance)
                 {
-                    _agent.destination = _followTarget.position;
+                    ReachedDestination = false;
                 }
-                _moveDirection = (_agent.steeringTarget - transform.position).normalized;
-                if (_moveDirection != Vector3.zero)
+                else
                 {
-                    transform.rotation = Quaternion.Slerp(_pawn.transform.rotation, Quaternion.LookRotation(_moveDirection), _turnSpeed * deltaTime);
-                }
-                if (_pawn.Status.StateHolder.CompareStateValue("Is Sprinting", true))
-                {
-                    _moveDirection *= 2f;
-                }
-                _moveVelocity = Vector3.MoveTowards(_moveVelocity, _moveDirection, _acceleration * deltaTime);
-                if (_agent.remainingDistance < _stopDistance)
-                {
-                    StopMovement();
+                    MoveVelocity = Vector3.MoveTowards(MoveVelocity, Vector3.zero, _deceleration * Time.deltaTime);
                 }
             }
             else
             {
-                if (_followTarget != null)
+                if (RemainingDistance < _pawn.Agent.stoppingDistance)
                 {
-                    _moveDirection = (_followTarget.position - transform.position).normalized;
-                    if (Vector3.Distance(transform.position, _followTarget.position) > _stopDistance)
-                    {
-                        _agent.destination = _followTarget.position;
-                    }
+                    ReachedDestination = true;
                 }
-                _moveVelocity = Vector3.MoveTowards(_moveVelocity, Vector3.zero, _deceleration * deltaTime);
+                else
+                {
+                    MoveDirection = (_pawn.Agent.steeringTarget - transform.position).normalized;
+                    if (MoveDirection != Vector3.zero)
+                    {
+                        transform.rotation = Quaternion.RotateTowards(_pawn.transform.rotation, Quaternion.LookRotation(MoveDirection), _turnSpeed * Time.deltaTime);
+                    }
+                    if (_pawn.Status.StateHolder.CompareStateValue("Is Sprinting", true))
+                    {
+                        MoveDirection *= 2f;
+                    }
+                    MoveVelocity = Vector3.MoveTowards(MoveVelocity, MoveDirection, _acceleration * Time.deltaTime);
+                }
             }
-            _pawn.Input.ForwardVelocity = Vector3.Dot(_moveVelocity, transform.forward);
-            _pawn.Input.RightVelocity = Vector3.Dot(_moveVelocity, transform.right);
-            _pawn.Input.TurnVelocity = Vector3.SignedAngle(transform.forward, _moveDirection, transform.up) / _turnAngle;
-            _pawn.Status.StateHolder.SetStateValue("Is Moving", _moveVelocity.magnitude > 0f);
+            ForwardVelocity = Vector3.Dot(MoveVelocity, transform.forward);
+            RightVelocity = Vector3.Dot(MoveVelocity, transform.right);
+            TurnVelocity = Vector3.SignedAngle(transform.forward, MoveDirection, Vector3.up) / _turnAngle;
+            _pawn.Status.StateHolder.SetStateValue("Is Moving", MoveVelocity.magnitude > 0f);
         }
 
-        public void SetDestination(Vector3 position, bool sprint = true)
+        public void SetDestination(Vector3 position, float stopDistance = 0f)
         {
-            ResetFollowTarget();
             if (_pawn.Status.StateHolder.CompareStateValue("Is Perfoming Action", true))
             {
                 return;
             }
+            if (stopDistance > 0f)
+            {
+                _pawn.Agent.stoppingDistance = stopDistance;
+            }
+            else
+            {
+                _pawn.Agent.stoppingDistance = _pawn.Agent.radius;
+            }
             if (NavMesh.SamplePosition(position, out NavMeshHit hit, 25f, NavMesh.AllAreas))
             {
-                _agent.destination = hit.position;
-                _pawn.Status.StateHolder.SetStateValue("Is Sprinting", sprint);
+                _pawn.Agent.destination = hit.position;
             }
         }
 
         public void StopMovement()
         {
-            _agent.ResetPath();
-        }
-
-        public void SetFollowTarget(Transform target, bool sprint = true, float stopDistance = 0f)
-        {
-            if (target != null)
-            {
-                _followTarget = target;
-                _pawn.Status.StateHolder.SetStateValue("Is Sprinting", sprint);
-                if (stopDistance > 0f)
-                {
-                    _stopDistance = stopDistance;
-                }
-                else
-                {
-                    _stopDistance = _agent.radius;
-                }
-                _agent.destination = _followTarget.position;
-            }
-            else
-            {
-                ResetFollowTarget();
-            }
-        }
-
-        public void ResetFollowTarget()
-        {
-            _followTarget = null;
-            _stopDistance = _agent.radius;
-            StopMovement();
+            _pawn.Agent.destination = transform.position;
+            ReachedDestination = true;
         }
 
         private void OnDrawGizmos()
         {
-            if (_agent != null && _agent.hasPath)
+            if (_pawn != null && _pawn.Agent != null && _pawn.Agent.hasPath)
             {
-                for (int i = 0; i < _agent.path.corners.Length - 1; i++)
+                for (int i = 0; i < _pawn.Agent.path.corners.Length - 1; i++)
                 {
-                    Debug.DrawLine(_agent.path.corners[i], _agent.path.corners[i + 1], Color.blue);
+                    Debug.DrawLine(_pawn.Agent.path.corners[i], _pawn.Agent.path.corners[i + 1], Color.blue);
                 }
             }
         }

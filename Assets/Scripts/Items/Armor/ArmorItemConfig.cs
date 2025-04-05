@@ -7,19 +7,14 @@ namespace WinterUniverse
     public class ArmorItemConfig : ItemConfig
     {
         [SerializeField] private List<StatModifierCreator> _modifiers = new();
-        [SerializeField] private List<EffectCreator> _effects = new();
+        [SerializeField] private List<EffectCreator> _effectsOnDamage = new();
 
         public List<StatModifierCreator> Modifiers => _modifiers;
-        public List<EffectCreator> Effects => _effects;
+        public List<EffectCreator> EffectsOnDamage => _effectsOnDamage;
 
         private void OnValidate()
         {
             _itemType = ItemType.Armor;
-        }
-
-        public override void Use(PawnController pawn, bool fromInventory = true)
-        {
-            pawn.Equipment.EquipArmor(this, fromInventory);
         }
     }
 }

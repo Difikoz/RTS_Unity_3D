@@ -7,31 +7,14 @@ namespace WinterUniverse
     {
         [SerializeField] private List<ArmorRenderer> _armorRenderes = new();
 
-        private PawnController _pawn;
-        private ArmorItemConfig _config;
-
-        public ArmorItemConfig Config => _config;
-
-        public void Initialize()
-        {
-            _pawn = GetComponentInParent<PawnController>();
-            ChangeConfig(null);
-        }
+        public ArmorItemConfig Config { get; private set; }
 
         public void ChangeConfig(ArmorItemConfig config)
         {
-            if (_config != null)
-            {
-                //_pawn.Status.RemoveStatModifiers(_config.Modifiers);
-            }
-            _config = config;
-            if (_config != null)
-            {
-                //_pawn.Status.AddStatModifiers(_config.Modifiers);
-            }
+            Config = config;
             foreach (ArmorRenderer ar in _armorRenderes)
             {
-                ar.Toggle(ar.Config == _config);
+                ar.Toggle(ar.Config == Config);
             }
         }
     }

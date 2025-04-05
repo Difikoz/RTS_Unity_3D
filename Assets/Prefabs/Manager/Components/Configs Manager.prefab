@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3934909057934295713
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4783726164551087136}
+  - component: {fileID: 2759510887271096861}
+  m_Layer: 0
+  m_Name: Configs Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4783726164551087136
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3934909057934295713}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2759510887271096861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3934909057934295713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d83b67a27c30ec44bb764733450356ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pawnStats:
+  - {fileID: 11400000, guid: 471b00ccdd63b6b479b6029c82643cbd, type: 2}
+  - {fileID: 11400000, guid: 812f21a6e6dcb1341a36e66f943c8708, type: 2}
+  - {fileID: 11400000, guid: c3aa4a3588f7f08409bac7a29939e9cf, type: 2}
+  - {fileID: 11400000, guid: ee19b8e7bab52394f8f2d2ad75c382b3, type: 2}
+  - {fileID: 11400000, guid: aa698b11f6a15c64cb384443768cd784, type: 2}
+  - {fileID: 11400000, guid: 7ea9429515a4a2445a22d75ba87718b3, type: 2}
+  - {fileID: 11400000, guid: 085612559b8067f41899ee395146f850, type: 2}
+  - {fileID: 11400000, guid: e8d44a4e12d88064388a90d9c8fee797, type: 2}
+  - {fileID: 11400000, guid: f211e448392f1644b8355c1065f1a0ca, type: 2}
+  - {fileID: 11400000, guid: d4aaa908b2fec534396bf4c982beda2b, type: 2}
+  - {fileID: 11400000, guid: 5400d4c22fa16ff47aa7274993df7811, type: 2}
+  _pawnStates:
+  - {fileID: 11400000, guid: db863fd9702c053438041a5c72fccab6, type: 2}
+  - {fileID: 11400000, guid: 2a67f0fa6181d5441afcc4857ec35e82, type: 2}
+  - {fileID: 11400000, guid: 443a8f4b0bd18b44487ec63d5875ca39, type: 2}
+  - {fileID: 11400000, guid: 48b63bd9fe5f06e488b615f7ab40654f, type: 2}
+  - {fileID: 11400000, guid: 572b69dc901210c47ae5b7cc40500624, type: 2}
+  - {fileID: 11400000, guid: a8223606e8d0ab84697684e7a91dfdce, type: 2}
+  - {fileID: 11400000, guid: 756db6f11b457d7449c182c436bc6910, type: 2}
+  - {fileID: 11400000, guid: 066ac5ba01cd1f543b8b1f2d602392ec, type: 2}
+  - {fileID: 11400000, guid: deb5cbbd7b15ee94ea26ab672ae6046b, type: 2}
+  - {fileID: 11400000, guid: 05bccdf2a6be4474b8dc447394824de0, type: 2}
+  - {fileID: 11400000, guid: 6bebbd0f4dbd71648bd64693cab526ca, type: 2}
+  - {fileID: 11400000, guid: a2ba1788ae769344c8f8f00ce32d1126, type: 2}
+  - {fileID: 11400000, guid: 56bc6c313873a2447891c08e6248ccce, type: 2}
+  - {fileID: 11400000, guid: c9e8202eddf7ffe4d8a4f3c5e874b17b, type: 2}
+  - {fileID: 11400000, guid: 9bd6e0eb96196a145a656fa73733911c, type: 2}
+  - {fileID: 11400000, guid: 2c0ec6e0d60f5d045b236cc32875a7ac, type: 2}
+  - {fileID: 11400000, guid: 98687d2a44b925342a5191ed003e451d, type: 2}
+  - {fileID: 11400000, guid: 6b31000699ebdda4e9343c780b1393c6, type: 2}
+  - {fileID: 11400000, guid: 5bd1617d63ad1924bb4017e527fb8cb7, type: 2}
+  - {fileID: 11400000, guid: cb9d083bd081f6845a8b54d79b143bc8, type: 2}
+  - {fileID: 11400000, guid: 93f93279f52e3c446b511a2a5cc1b07d, type: 2}
+  - {fileID: 11400000, guid: 9fd9558796fd56f4ba7b07d691f1bbef, type: 2}
+  - {fileID: 11400000, guid: 666e28e6b39ab214cbd379f171d9416b, type: 2}
+  - {fileID: 11400000, guid: 2fcb2084347fd4043ae189469ee96444, type: 2}
+  - {fileID: 11400000, guid: f7802562e2e37ac4ba047aa9074626af, type: 2}
+  - {fileID: 11400000, guid: a09c94ad719cf10438b9ceded73ce8fa, type: 2}
+  - {fileID: 11400000, guid: 1cc1471d75c24ff4db9c8fe7a22be7cc, type: 2}
+  - {fileID: 11400000, guid: c55819fe44514db40ba7f993bcb26e02, type: 2}
+  - {fileID: 11400000, guid: 59a7f5e7ff9b41946acd90d5f2e1f229, type: 2}
+  - {fileID: 11400000, guid: 1d0ca4d89fbcdc5488629c3cb60baaf7, type: 2}
+  _factions:
+  - {fileID: 11400000, guid: b5251bd9cc76c9e4eaffab1873f8875f, type: 2}
+  - {fileID: 11400000, guid: 5348b1bb2cf53ac4a9ac4e755708f66d, type: 2}
+  - {fileID: 11400000, guid: fba5ee9d1ff229c4ba2158403b782a75, type: 2}
+  - {fileID: 11400000, guid: 00f3e897b79ac1742aa788c0c91c2ae0, type: 2}
+  - {fileID: 11400000, guid: 60b19b172dcdcac448135095d3825669, type: 2}
+  - {fileID: 11400000, guid: 158cefa4793903b4fb4596589a5d781e, type: 2}
+  - {fileID: 11400000, guid: 7d259449535907d42abd073f51d483bd, type: 2}
+  - {fileID: 11400000, guid: 5cec099ceb4615e4db10ff6ed64a17fb, type: 2}
+  _weapons:
+  - {fileID: 11400000, guid: 164ab327000fc0d4287320e5b04e5ece, type: 2}
+  _armors:
+  - {fileID: 11400000, guid: 09463619294390b44b3070ff17b81bd2, type: 2}
+  _consumables:
+  - {fileID: 11400000, guid: 7c87f4f9ae530ae43a0d4c974172ca9a, type: 2}
+  _resources:
+  - {fileID: 11400000, guid: 8f91d18a1ede1ac429b9b622f6ea48bd, type: 2}

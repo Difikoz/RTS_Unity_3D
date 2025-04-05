@@ -12,11 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61693918f39e298478ab1426c52ddfd1, type: 3}
   m_Name: 05 Red Star
   m_EditorClassIdentifier: 
-  _id: RED STAR
-  _displayName: Red Star
-  _description: Description
-  _color: {r: 1, g: 1, b: 1, a: 1}
-  _icon: {fileID: 0}
+  _id: Red Star
+  _displayName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _color: {fileID: 11400000, guid: 76565e300a0f07a498f9419d67c1486b, type: 2}
+  _icon:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   _relationships:
   - _faction: {fileID: 11400000, guid: b5251bd9cc76c9e4eaffab1873f8875f, type: 2}
     _state: 1
@@ -25,12 +48,15 @@ MonoBehaviour:
   - _faction: {fileID: 11400000, guid: fba5ee9d1ff229c4ba2158403b782a75, type: 2}
     _state: 1
   - _faction: {fileID: 11400000, guid: 00f3e897b79ac1742aa788c0c91c2ae0, type: 2}
-    _state: 0
+    _state: 1
   - _faction: {fileID: 11400000}
     _state: 2
   - _faction: {fileID: 11400000, guid: 158cefa4793903b4fb4596589a5d781e, type: 2}
     _state: 0
   - _faction: {fileID: 11400000, guid: 7d259449535907d42abd073f51d483bd, type: 2}
-    _state: 1
+    _state: 0
   - _faction: {fileID: 11400000, guid: 5cec099ceb4615e4db10ff6ed64a17fb, type: 2}
     _state: 0
+  references:
+    version: 2
+    RefIds: []

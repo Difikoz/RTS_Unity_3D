@@ -13,10 +13,36 @@ MonoBehaviour:
   m_Name: 04 Thermal
   m_EditorClassIdentifier: 
   _id: THERMAL
-  _displayName: Thermal
-  _description: Description
-  _color: {r: 1, g: 1, b: 1, a: 1}
-  _icon: {fileID: 0}
+  _displayName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _color: {fileID: 11400000, guid: 2c2e9ebf11be29a449a88419554ec8c6, type: 2}
+  _icon:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
   _resistanceStat: {fileID: 11400000, guid: e8d44a4e12d88064388a90d9c8fee797, type: 2}
   _hitVFX: []
   _hitClips: []
+  references:
+    version: 2
+    RefIds: []
