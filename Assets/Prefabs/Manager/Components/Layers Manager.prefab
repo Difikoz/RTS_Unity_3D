@@ -44,12 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 699804e409d615a4387be7c3b21c54ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _obstacleMask:
-    serializedVersion: 2
-    m_Bits: 1
-  _pawnMask:
+  _groundMask:
     serializedVersion: 2
     m_Bits: 8
-  _detectableMask:
+  _obstacleMask:
     serializedVersion: 2
     m_Bits: 9
+  _pawnMask:
+    serializedVersion: 2
+    m_Bits: 512
+  _detectableMask:
+    serializedVersion: 2
+    m_Bits: 521

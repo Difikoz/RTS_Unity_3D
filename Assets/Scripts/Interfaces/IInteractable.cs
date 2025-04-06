@@ -5,8 +5,9 @@ namespace WinterUniverse
     public interface IInteractable
     {
         public Transform GetPoint();
+        public float GetStopDistance();
         public string GetText();
-        public bool CanInteract(PawnController pawn);
-        public void OnInteract(PawnController pawn);
+        public bool CanInteract(OwnerController owner);
+        public void OnInteract(OwnerController owner);
     }
 }

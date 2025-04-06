@@ -7,8 +7,7 @@ namespace WinterUniverse
         public override void OnStart()
         {
             base.OnStart();
-            //_npc.Pawn.Combat.SetTarget(_npc.Pawn.Detection.GetClosestEnemy());
-            //_npc.Pawn.Combat.AttackTarget();
+            _npc.Chase(_npc.Pawn.Detection.GetClosestEnemy());
         }
     }
 }

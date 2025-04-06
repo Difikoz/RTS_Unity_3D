@@ -196,6 +196,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""FollowPawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""60ba5130-7f8f-42db-8db1-05b65f67993f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Zoom"",
                     ""type"": ""Value"",
                     ""id"": ""fc53537b-af37-471c-83eb-df91e231ae2b"",
@@ -214,6 +223,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""ToggleRotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8205ec1e-78f4-4383-ae3f-f89812dcc8b5"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""FollowPawn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -760,6 +780,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Camera_Move = m_Camera.FindAction("Move", throwIfNotFound: true);
         m_Camera_Rotate = m_Camera.FindAction("Rotate", throwIfNotFound: true);
         m_Camera_ToggleRotate = m_Camera.FindAction("ToggleRotate", throwIfNotFound: true);
+        m_Camera_FollowPawn = m_Camera.FindAction("FollowPawn", throwIfNotFound: true);
         m_Camera_Zoom = m_Camera.FindAction("Zoom", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -980,6 +1001,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Camera_Move;
     private readonly InputAction m_Camera_Rotate;
     private readonly InputAction m_Camera_ToggleRotate;
+    private readonly InputAction m_Camera_FollowPawn;
     private readonly InputAction m_Camera_Zoom;
     /// <summary>
     /// Provides access to input actions defined in input action map "Camera".
@@ -1008,6 +1030,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Camera/ToggleRotate".
         /// </summary>
         public InputAction @ToggleRotate => m_Wrapper.m_Camera_ToggleRotate;
+        /// <summary>
+        /// Provides access to the underlying input action "Camera/FollowPawn".
+        /// </summary>
+        public InputAction @FollowPawn => m_Wrapper.m_Camera_FollowPawn;
         /// <summary>
         /// Provides access to the underlying input action "Camera/Zoom".
         /// </summary>
@@ -1050,6 +1076,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ToggleRotate.started += instance.OnToggleRotate;
             @ToggleRotate.performed += instance.OnToggleRotate;
             @ToggleRotate.canceled += instance.OnToggleRotate;
+            @FollowPawn.started += instance.OnFollowPawn;
+            @FollowPawn.performed += instance.OnFollowPawn;
+            @FollowPawn.canceled += instance.OnFollowPawn;
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
@@ -1076,6 +1105,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ToggleRotate.started -= instance.OnToggleRotate;
             @ToggleRotate.performed -= instance.OnToggleRotate;
             @ToggleRotate.canceled -= instance.OnToggleRotate;
+            @FollowPawn.started -= instance.OnFollowPawn;
+            @FollowPawn.performed -= instance.OnFollowPawn;
+            @FollowPawn.canceled -= instance.OnFollowPawn;
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
@@ -1417,6 +1449,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleRotate(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "FollowPawn" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFollowPawn(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Zoom" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

@@ -110,6 +110,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "FollowPawn",
+                    "type": "Button",
+                    "id": "60ba5130-7f8f-42db-8db1-05b65f67993f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Zoom",
                     "type": "Value",
                     "id": "fc53537b-af37-471c-83eb-df91e231ae2b",
@@ -128,6 +137,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "ToggleRotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8205ec1e-78f4-4383-ae3f-f89812dcc8b5",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "FollowPawn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

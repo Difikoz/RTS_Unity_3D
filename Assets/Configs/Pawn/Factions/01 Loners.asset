@@ -40,6 +40,8 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
+  _goals:
+  - {fileID: 11400000, guid: 03687e8a2f1b53c409f54f1cea9754a4, type: 2}
   _relationships:
   - _faction: {fileID: 11400000}
     _state: 1

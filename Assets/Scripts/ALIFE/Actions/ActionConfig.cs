@@ -6,7 +6,7 @@ namespace WinterUniverse
     [CreateAssetMenu(fileName = "Action", menuName = "Winter Universe/ALIFE/New Action")]
     public class ActionConfig : ScriptableObject
     {
-        [SerializeField] private string _displayName = "Name";
+        [SerializeField] private string _id;
         [SerializeField] private int _cost = 1;
         [SerializeField] private bool _playAnimationOnStart;
         [SerializeField] private string _animationOnStart = "Eat";
@@ -24,7 +24,7 @@ namespace WinterUniverse
         [SerializeField] private List<StateCreator> _effectsOnAbort = new();
         [SerializeField] private List<StateCreator> _effectsOnComplete = new();
 
-        public string DisplayName => _displayName;
+        public string ID => _id;
         public int Cost => _cost;
         public bool PlayAnimationOnStart => _playAnimationOnStart;
         public string AnimationOnStart => _animationOnStart;

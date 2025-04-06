@@ -39,9 +39,17 @@ namespace WinterUniverse
             if (_setDestinationPerfomed)
             {
                 _setDestinationPerfomed = false;
-                if (Physics.Raycast(GameManager.StaticInstance.CameraManager.CameraRay, out RaycastHit hit, 1000f, GameManager.StaticInstance.LayersManager.ObstacleMask))
+                if (Physics.Raycast(GameManager.StaticInstance.CameraManager.CameraRay, out RaycastHit hit, 1000f, GameManager.StaticInstance.LayersManager.DetectableMask))
                 {
-                    MoveTo(hit.point);
+                    if (hit.collider.TryGetComponent(out PawnController pawn))
+                    {
+                        Chase(pawn);
+                    }
+                    else
+                    {
+                        MoveTo(hit.point);
+                    }
+                    GameManager.StaticInstance.CameraManager.SetTarget(Pawn);
                 }
             }
             else if (_stopMovementPerfomed)
@@ -54,6 +62,16 @@ namespace WinterUniverse
                 _toggleSprintPerfomed = false;
                 ToggleSprint();
             }
+        }
+
+        public override void OnPawnChased(OwnerController owner)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void OnSettlementEntered(Settlement settlement)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

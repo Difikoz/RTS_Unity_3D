@@ -6,8 +6,10 @@ namespace WinterUniverse
     [CreateAssetMenu(fileName = "Faction", menuName = "Winter Universe/Pawn/New Faction")]
     public class FactionConfig : BasicInfoConfig
     {
+        [SerializeField] private List<GoalHolderConfig> _goals = new();
         [SerializeField] private List<FactionRelationship> _relationships = new();
 
+        public List<GoalHolderConfig> Goals => _goals;
         public List<FactionRelationship> Relationships => _relationships;
 
         public RelationshipState GetState(FactionConfig other)

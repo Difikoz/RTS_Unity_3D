@@ -8,9 +8,9 @@ namespace WinterUniverse
 
         private Vector3 _rootPosition;
 
-        public override void Initialize()
+        public override void InitializeComponent()
         {
-            base.Initialize();
+            base.InitializeComponent();
             _rootPosition = transform.position;
         }
 

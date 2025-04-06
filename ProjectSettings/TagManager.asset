@@ -8,13 +8,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Pawn
+  - Ground
   - Water
   - UI
   - EventTrigger
   - Damageable
   - Damage
-  - 
+  - Pawn
   - 
   - 
   - 

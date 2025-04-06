@@ -6,6 +6,7 @@ namespace WinterUniverse
 {
     [RequireComponent(typeof(PawnAnimator))]
     [RequireComponent(typeof(PawnCombat))]
+    [RequireComponent(typeof(PawnDetection))]
     [RequireComponent(typeof(PawnEquipment))]
     [RequireComponent(typeof(PawnFaction))]
     [RequireComponent(typeof(PawnInventory))]
@@ -13,31 +14,39 @@ namespace WinterUniverse
     [RequireComponent(typeof(PawnStatus))]
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(Rigidbody))]
+    //[RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
-    public class PawnController : BasicComponent
+    public class PawnController : BasicComponent, IInteractable
     {
         private List<PawnComponent> _components;
 
         public PawnAnimator Animator { get; private set; }
         public NavMeshAgent Agent { get; private set; }
-        public Rigidbody RB { get; private set; }
+        //public Rigidbody RB { get; private set; }
         public CapsuleCollider Collider { get; private set; }
         public PawnCombat Combat { get; private set; }
+        public PawnDetection Detection { get; private set; }
         public PawnEquipment Equipment { get; private set; }
         public PawnFaction Faction { get; private set; }
         public PawnInventory Inventory { get; private set; }
         public PawnLocomotion Locomotion { get; private set; }
         public PawnStatus Status { get; private set; }
+        public OwnerController Owner { get; private set; }
+
+        public void ChangeOwner(OwnerController owner)
+        {
+            Owner = owner;
+        }
 
         public override void InitializeComponent()
         {
             _components = new();
             Animator = GetComponent<PawnAnimator>();
             Agent = GetComponent<NavMeshAgent>();
-            RB = GetComponent<Rigidbody>();
+            //RB = GetComponent<Rigidbody>();
             Collider = GetComponent<CapsuleCollider>();
             Combat = GetComponent<PawnCombat>();
+            Detection = GetComponent<PawnDetection>();
             Equipment = GetComponent<PawnEquipment>();
             Faction = GetComponent<PawnFaction>();
             Inventory = GetComponent<PawnInventory>();
@@ -45,6 +54,7 @@ namespace WinterUniverse
             Status = GetComponent<PawnStatus>();
             _components.Add(Animator);
             _components.Add(Combat);
+            _components.Add(Detection);
             _components.Add(Equipment);
             _components.Add(Faction);
             _components.Add(Inventory);
@@ -102,6 +112,31 @@ namespace WinterUniverse
             {
                 component.LateUpdateComponent();
             }
+        }
+
+        public Transform GetPoint()
+        {
+            return transform;
+        }
+
+        public float GetStopDistance()
+        {
+            return Agent.radius;
+        }
+
+        public string GetText()
+        {
+            return "Chase";
+        }
+
+        public bool CanInteract(OwnerController owner)
+        {
+            return true;
+        }
+
+        public void OnInteract(OwnerController owner)
+        {
+            owner.OnPawnChased(Owner);
         }
     }
 }

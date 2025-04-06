@@ -56,6 +56,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f211e448392f1644b8355c1065f1a0ca, type: 2}
   - {fileID: 11400000, guid: d4aaa908b2fec534396bf4c982beda2b, type: 2}
   - {fileID: 11400000, guid: 5400d4c22fa16ff47aa7274993df7811, type: 2}
+  - {fileID: 11400000, guid: abca0e5908085df4a82a86d34d928c46, type: 2}
+  - {fileID: 11400000, guid: b883f8c45d2420140a40af26ea01cead, type: 2}
+  - {fileID: 11400000, guid: dc30b6397ae24e048aded1dee91ca945, type: 2}
   _pawnStates:
   - {fileID: 11400000, guid: db863fd9702c053438041a5c72fccab6, type: 2}
   - {fileID: 11400000, guid: 2a67f0fa6181d5441afcc4857ec35e82, type: 2}

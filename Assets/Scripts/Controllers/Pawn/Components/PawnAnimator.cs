@@ -4,7 +4,15 @@ namespace WinterUniverse
 {
     public class PawnAnimator : PawnComponent
     {
+        [SerializeField] private Transform _eyes;
+        [SerializeField] private Transform _head;
+        [SerializeField] private Transform _body;
+
         private Animator _animator;
+
+        public Transform Eyes => _eyes;
+        public Transform Head => _head;
+        public Transform Body => _body;
 
         public override void InitializeComponent()
         {

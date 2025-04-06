@@ -2,19 +2,26 @@ using UnityEngine;
 
 namespace WinterUniverse
 {
-    public class OwnerController : BasicComponent
+    public abstract class OwnerController : BasicComponent
     {
         public PawnController Pawn { get; private set; }
 
         public override void InitializeComponent()
         {
             Pawn = GameManager.StaticInstance.PrefabsManager.GetPawn();
+            Pawn.ChangeOwner(this);
             GameManager.StaticInstance.PawnsManager.AddController(Pawn);
         }
 
         public void MoveTo(Vector3 position)
         {
             Pawn.Locomotion.SetDestination(position);
+        }
+
+        public void Chase(PawnController pawn)
+        {
+            Pawn.Combat.SetTarget(pawn);
+            Pawn.Locomotion.SetDestination((IInteractable)pawn);
         }
 
         public void StopMovement()
@@ -31,5 +38,8 @@ namespace WinterUniverse
         {
             Pawn.Status.StateHolder.SetStateValue("Is Sprinting", enabled);
         }
+
+        public abstract void OnPawnChased(OwnerController owner);
+        public abstract void OnSettlementEntered(Settlement settlement);
     }
 }

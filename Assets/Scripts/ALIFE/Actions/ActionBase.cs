@@ -3,27 +3,34 @@ using UnityEngine;
 
 namespace WinterUniverse
 {
-    public abstract class ActionBase : MonoBehaviour
+    public abstract class ActionBase : BasicComponent
     {
         [SerializeField] protected ActionConfig _config;
 
         protected NPCController _npc;
         private float _timerTime;
-        private Dictionary<string, bool> _effectsForCheck = new();
-        private Dictionary<string, bool> _conditionsToStart = new();
-        private Dictionary<string, bool> _conditionsToAbort = new();
-        private Dictionary<string, bool> _conditionsToComplete = new();
-        private Dictionary<string, bool> _effectsOnStart = new();
-        private Dictionary<string, bool> _effectsOnAbort = new();
-        private Dictionary<string, bool> _effectsOnComplete = new();
+        private Dictionary<string, bool> _effectsForCheck;
+        private Dictionary<string, bool> _conditionsToStart;
+        private Dictionary<string, bool> _conditionsToAbort;
+        private Dictionary<string, bool> _conditionsToComplete;
+        private Dictionary<string, bool> _effectsOnStart;
+        private Dictionary<string, bool> _effectsOnAbort;
+        private Dictionary<string, bool> _effectsOnComplete;
 
         public ActionConfig Config => _config;
         public Dictionary<string, bool> Conditions => _conditionsToStart;
         public Dictionary<string, bool> Effects => _effectsForCheck;
 
-        public virtual void Initialize()
+        public override void InitializeComponent()
         {
             _npc = GetComponentInParent<NPCController>();
+            _effectsForCheck = new();
+            _conditionsToStart = new();
+            _conditionsToAbort = new();
+            _conditionsToComplete = new();
+            _effectsOnStart = new();
+            _effectsOnAbort = new();
+            _effectsOnComplete = new();
             foreach (StateCreator creator in _config.Results)
             {
                 _effectsForCheck.Add(creator.Config.Key, creator.Value);
@@ -161,11 +168,6 @@ namespace WinterUniverse
             {
                 _npc.Pawn.Locomotion.StopMovement();
             }
-        }
-
-        public virtual void OnUpdate(float deltaTime)
-        {
-
         }
     }
 }

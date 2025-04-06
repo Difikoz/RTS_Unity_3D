@@ -10,6 +10,7 @@ namespace WinterUniverse
         [SerializeField, Range(0f, 720f)] private float _turnSpeed = 180f;
         [SerializeField] private float _turnAngle = 45f;
 
+        public IInteractable Interactable { get; private set; }
         public Vector3 MoveDirection { get; private set; }
         public Vector3 MoveVelocity { get; private set; }
         public float ForwardVelocity { get; private set; }
@@ -21,6 +22,21 @@ namespace WinterUniverse
         public override void UpdateComponent()
         {
             base.UpdateComponent();
+            if (Interactable != null)
+            {
+                if (ReachedDestination)
+                {
+                    if (Interactable.CanInteract(_pawn.Owner))
+                    {
+                        Interactable.OnInteract(_pawn.Owner);
+                    }
+                    StopMovement();
+                }
+                else
+                {
+                    _pawn.Agent.destination = Interactable.GetPoint().position;
+                }
+            }
             RemainingDistance = Vector3.Distance(transform.position, _pawn.Agent.destination);
             if (ReachedDestination)
             {
@@ -59,12 +75,20 @@ namespace WinterUniverse
             _pawn.Status.StateHolder.SetStateValue("Is Moving", MoveVelocity.magnitude > 0f);
         }
 
+        public void SetDestination(IInteractable target)
+        {
+            Interactable = target;
+            _pawn.Agent.destination = Interactable.GetPoint().position;
+            _pawn.Agent.stoppingDistance = Interactable.GetStopDistance();
+        }
+
         public void SetDestination(Vector3 position, float stopDistance = 0f)
         {
             if (_pawn.Status.StateHolder.CompareStateValue("Is Perfoming Action", true))
             {
                 return;
             }
+            Interactable = null;
             if (stopDistance > 0f)
             {
                 _pawn.Agent.stoppingDistance = stopDistance;
@@ -73,7 +97,7 @@ namespace WinterUniverse
             {
                 _pawn.Agent.stoppingDistance = _pawn.Agent.radius;
             }
-            if (NavMesh.SamplePosition(position, out NavMeshHit hit, 25f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(position, out NavMeshHit hit, 2f, NavMesh.AllAreas))
             {
                 _pawn.Agent.destination = hit.position;
             }
@@ -81,7 +105,9 @@ namespace WinterUniverse
 
         public void StopMovement()
         {
+            Interactable = null;
             _pawn.Agent.destination = transform.position;
+            _pawn.Agent.stoppingDistance = _pawn.Agent.radius;
             ReachedDestination = true;
         }
 
